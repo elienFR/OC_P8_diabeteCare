@@ -1,0 +1,19 @@
+#Server
+server:
+  port: 9101
+
+#Spring
+spring:
+  application:
+    name: 'config-server'
+  cloud:
+    compatibility-verifier:
+      enabled: 'false'
+    config:
+      server:
+        bootstrap: 'true'
+        default-label: 'main'
+        uri: 'https://github.com/elienFR/mcommerce-config-repo'
+
+
+
