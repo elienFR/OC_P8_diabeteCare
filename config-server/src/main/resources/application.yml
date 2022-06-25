@@ -13,7 +13,7 @@ spring:
       server:
         bootstrap: 'true'
         default-label: 'main'
-        uri: 'https://github.com/elienFR/mcommerce-config-repo'
+        uri: 'https://github.com/elienFR/OC_P8_diabeteCare/tree/main/config-server-repo'
 
 
 

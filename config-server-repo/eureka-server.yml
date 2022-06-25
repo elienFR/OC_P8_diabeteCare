@@ -1,0 +1,11 @@
+server:
+  port: 9102
+
+#Eureka
+eureka:
+  client:
+    serviceUrl.defaultZone: 'http://localhost:9102/eureka/'
+    registerWithEureka: 'false'
+    fetchRegistry: 'false'
+  server:
+    renewal-percent-threshold: 0.85
