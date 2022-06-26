@@ -13,7 +13,7 @@ spring:
       server:
         bootstrap: 'true'
         git:
-          default-label: 'main'
+          default-label: 'config_repo'
           uri: 'https://github.com/elienFR/OC_P9_diabeteCare_config_repo'
 
 
