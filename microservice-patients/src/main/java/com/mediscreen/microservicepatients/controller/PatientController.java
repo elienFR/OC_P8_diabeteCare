@@ -19,7 +19,8 @@ import java.util.List;
 
 @RestController
 @Validated
-@RequestMapping("/api/" + "${api.ver}" + "/patient")
+//@RequestMapping("/api" + "/${api.ver}" + "/patient")
+@RequestMapping("/patient")
 public class PatientController {
 
   @Autowired
