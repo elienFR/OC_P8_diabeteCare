@@ -1,33 +1,42 @@
 package com.mediscreen.microservicepatients.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.util.Date;
 
-@Document(collection = "patients")
+@Entity
+@Table(name = "patients")
 public class Patient {
 
+  @Column(name = "id")
   @Id
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+  @Column(name = "firstname")
   @NotBlank(message="firstname is mandatory !")
   private String firstname;
+  @Column(name="lastname")
   @NotBlank(message="lastname is mandatory !")
   private String lastname;
-  @NotBlank(message="birthdate is mandatory !")
+  @Column(name = "dob")
+  @PastOrPresent(message = "Date of birth must be past or present !")
   private Date birthdate;
-  @NotBlank(message="gender is mandatory !")
+  @Column(name = "gender")
+  @NotNull(message="gender is mandatory !")
   private Gender gender;
+  @Column(name = "address")
   @NotBlank(message="address is mandatory !")
-  private PostalAddress address;
+  private String address;
+  @Column(name = "phone")
   @NotBlank(message="phone number is mandatory !")
   private String phoneNumber;
 
   public Patient(){
 
   }
-  public Patient(String firstname, String lastname, Date birthdate, Gender gender, PostalAddress address, String phoneNumber) {
+  public Patient(String firstname, String lastname, Date birthdate, Gender gender, String address, String phoneNumber) {
     this.firstname = firstname;
     this.lastname = lastname;
     this.birthdate = birthdate;
@@ -36,11 +45,11 @@ public class Patient {
     this.phoneNumber = phoneNumber;
   }
 
-  public String getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(String id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
@@ -76,11 +85,11 @@ public class Patient {
     this.gender = gender;
   }
 
-  public PostalAddress getAddress() {
+  public String getAddress() {
     return address;
   }
 
-  public void setAddress(PostalAddress address) {
+  public void setAddress(String address) {
     this.address = address;
   }
 

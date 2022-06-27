@@ -19,8 +19,8 @@ import java.util.List;
 
 @RestController
 @Validated
-//@RequestMapping("/api" + "/${api.ver}" + "/patient")
-@RequestMapping("/patient")
+@RequestMapping("/api" + "/${api.ver}" + "/patient")
+//@RequestMapping("/patient")
 public class PatientController {
 
   @Autowired
@@ -35,14 +35,19 @@ public class PatientController {
   public PatientDTO insert(
     @NotBlank(message = "Family is mandatory !")
     @RequestParam("family") String lastname,
+
     @NotBlank(message = "Given is mandatory !")
     @RequestParam("given") String firstname,
+
     @PastOrPresent(message = "Date of birth must be past or present !")
     @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob,
+
     @NotNull(message = "Gender is mandatory !")
     @RequestParam("sex") Gender gender,
+
     @NotBlank(message = "Address is mandatory !")
     @RequestParam("address") String addressNumberAndStreet,
+
     @RequestParam
     @Pattern(message = "must be a properly written US phone number, i.e : 123-456-7890",
       regexp = "^\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4})$") String phone) {
