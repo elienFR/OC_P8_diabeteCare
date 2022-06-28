@@ -1,5 +1,6 @@
 package com.mediscreen.microservicepatients.service;
 
+import com.mediscreen.microservicepatients.controller.exceptions.PatientNotFoundException;
 import com.mediscreen.microservicepatients.model.DTO.PatientDTO;
 import com.mediscreen.microservicepatients.model.Gender;
 import com.mediscreen.microservicepatients.model.Patient;
@@ -12,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -34,12 +36,12 @@ public class PatientService {
   /**
    * this method calls the repository to insert a new patient in the database
    *
-   * @param family      is the patient's last name
-   * @param given       is the patient first name
-   * @param birthdate   is the patient's date of birth
-   * @param gender      is the patient's gender
-   * @param address     is the patient street address
-   * @param phone       is the patient phone
+   * @param family    is the patient's last name
+   * @param given     is the patient first name
+   * @param birthdate is the patient's date of birth
+   * @param gender    is the patient's gender
+   * @param address   is the patient street address
+   * @param phone     is the patient phone
    * @return the saved patient in DB
    */
   public PatientDTO insert(String family, String given, String birthdate, Gender gender, String address, String phone) {
@@ -69,7 +71,7 @@ public class PatientService {
    */
   private static Optional<Patient> convertToPatient(Optional<PatientDTO> patientDTOToConvert) {
     if (patientDTOToConvert.isEmpty()) {
-      return Optional.of(new Patient());
+      return Optional.empty();
     } else {
       return Optional.of(new Patient(
         patientDTOToConvert.get().getGiven(),
@@ -90,7 +92,7 @@ public class PatientService {
    */
   private static Optional<PatientDTO> convertToPatientDTO(Optional<Patient> patientToConvert) {
     if (patientToConvert.isEmpty()) {
-      return Optional.of(new PatientDTO());
+      return Optional.empty();
     } else {
       return Optional.of(new PatientDTO(
         patientToConvert.get().getLastname(),
@@ -135,7 +137,9 @@ public class PatientService {
     String lastname,
     String firstname,
     Date birthdate) {
+
     return patientRepository.findByLastnameAndFirstnameAndBirthdate(lastname, firstname, birthdate);
+
   }
 
 
@@ -145,11 +149,43 @@ public class PatientService {
       firstname,
       convertInDateSql(birthdate)
     );
-    if(optionalPatientToDelete.isPresent()){
+    if (optionalPatientToDelete.isPresent()) {
       patientRepository.delete(optionalPatientToDelete.get());
       return true;
     } else {
       return false;
     }
   }
+
+  public PatientDTO update(
+    String lastname,
+    String firstname,
+    String birthdate,
+    Gender gender,
+    String address,
+    String phone) {
+
+    Optional<Patient> optionalPatient = findPatientByLastnameAndFirstnameAndBirthdate(
+      lastname,
+      firstname,
+      convertInDateSql(birthdate)
+    );
+
+    if (optionalPatient.isEmpty()) {
+      throw new PatientNotFoundException("The patient you try to update has not been found !");
+    } else {
+      // un update do not change first name, lastname, and birthdate.
+      Patient patientToUpdate = optionalPatient.get();
+      patientToUpdate.setGender(gender);
+      patientToUpdate.setAddress(address);
+      patientToUpdate.setPhoneNumber(phone);
+      return convertToPatientDTO(Optional.of(save(patientToUpdate))).get();
+    }
+
+  }
+
+  private Patient save(Patient patient) {
+    return patientRepository.save(patient);
+  }
+
 }
