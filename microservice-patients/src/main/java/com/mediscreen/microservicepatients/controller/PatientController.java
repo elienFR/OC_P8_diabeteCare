@@ -2,7 +2,6 @@ package com.mediscreen.microservicepatients.controller;
 
 import com.mediscreen.microservicepatients.model.DTO.PatientDTO;
 import com.mediscreen.microservicepatients.model.Gender;
-import com.mediscreen.microservicepatients.model.Patient;
 import com.mediscreen.microservicepatients.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,7 +13,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,7 +30,7 @@ public class PatientController {
   }
 
   @GetMapping("/")
-  public PatientDTO findByLastnameAndFirstnameAndBirthDate(
+  public PatientDTO findByLastnameAndFirstnameAndBirthdate(
     @NotBlank(message = "Family is mandatory !")
     @RequestParam("family") String lastname,
 
@@ -40,9 +38,9 @@ public class PatientController {
     @RequestParam("given") String firstname,
 
     @PastOrPresent(message = "Date of birth must be past or present !")
-    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob
+    @RequestParam("dob") @DateTimeFormat(pattern = "yyyy-MM-dd") String birthdate
   ) {
-    return patientService.findByLastnameAndFirstnameAndBirthDate(lastname, firstname, dob);
+    return patientService.findPatientDTOByLastnameAndFirstnameAndBirthdate(lastname, firstname, birthdate).get();
   }
 
   @PostMapping("/add")
@@ -53,8 +51,8 @@ public class PatientController {
     @NotBlank(message = "Given is mandatory !")
     @RequestParam("given") String firstname,
 
-    @PastOrPresent(message = "Date of birth must be past or present !")
-    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob,
+    @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
+    @RequestParam("dob") String birthdate,
 
     @NotNull(message = "Gender is mandatory !")
     @RequestParam("sex") Gender gender,
@@ -65,7 +63,7 @@ public class PatientController {
     @RequestParam
     @Pattern(message = "must be a properly written US phone number, i.e : 123-456-7890",
       regexp = "^\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4})$") String phone) {
-    return patientService.insert(lastname, firstname, dob, gender, addressNumberAndStreet, phone);
+    return patientService.insert(lastname, firstname, birthdate, gender, addressNumberAndStreet, phone);
   }
 
   //  @PostMapping("/add")
@@ -82,14 +80,13 @@ public class PatientController {
     @NotBlank(message = "Given is mandatory !")
     @RequestParam("given") String firstname,
 
-    @PastOrPresent(message = "Date of birth must be past or present !")
-    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob
-  ){
-    patientService.delete(
-      findByLastnameAndFirstnameAndBirthDate(lastname, firstname, dob)
-    );
-    return "delete successful !";
+    @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
+    @RequestParam("dob") String birthdate
+  ) {
+    if(patientService.delete(lastname, firstname, birthdate)){
+      return "Deletion successful !";
+    } else {
+      return "Not found, deletion abort !";
+    }
   }
-
-
 }
