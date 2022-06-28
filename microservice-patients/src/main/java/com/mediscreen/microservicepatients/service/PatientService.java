@@ -1,20 +1,15 @@
 package com.mediscreen.microservicepatients.service;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.mediscreen.microservicepatients.model.DTO.PatientDTO;
 import com.mediscreen.microservicepatients.model.Gender;
 import com.mediscreen.microservicepatients.model.Patient;
-import com.mediscreen.microservicepatients.model.PostalAddress;
 import com.mediscreen.microservicepatients.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service
@@ -87,5 +82,32 @@ public class PatientService {
       patientToConvert.getAddress(),
       patientToConvert.getPhoneNumber()
     );
+  }
+
+  /**
+   * Find a patient thanks to its firstname lastname and date of birth
+   *
+   * @param lastname is the patient family name
+   * @param firstname is the patient firstname
+   * @param birthDate is the patient date of birth
+   * @return a patient DTO object
+   */
+  public PatientDTO findByLastnameAndFirstnameAndBirthDate(
+    String lastname,
+    String firstname,
+    Date birthDate) {
+    return convertToPatientDTO(
+      findPatientByLastnameAndFirstnameAndBirthdate(lastname, firstname, birthDate));
+  }
+
+  private Patient findPatientByLastnameAndFirstnameAndBirthdate(
+    String lastname,
+    String firstname,
+    Date birthDate) {
+    return patientRepository.findByLastnameAndFirstnameAndBirthdate(lastname, firstname, birthDate);
+  }
+
+  public void delete(PatientDTO patientToDelete) {
+    patientRepository.delete(convertToPatient(patientToDelete));
   }
 }

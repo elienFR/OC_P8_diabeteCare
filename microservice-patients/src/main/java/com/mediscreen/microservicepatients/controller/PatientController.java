@@ -31,6 +31,20 @@ public class PatientController {
     return patientService.getAll();
   }
 
+  @GetMapping("/")
+  public PatientDTO findByLastnameAndFirstnameAndBirthDate(
+    @NotBlank(message = "Family is mandatory !")
+    @RequestParam("family") String lastname,
+
+    @NotBlank(message = "Given is mandatory !")
+    @RequestParam("given") String firstname,
+
+    @PastOrPresent(message = "Date of birth must be past or present !")
+    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob
+  ) {
+    return patientService.findByLastnameAndFirstnameAndBirthDate(lastname, firstname, dob);
+  }
+
   @PostMapping("/add")
   public PatientDTO insert(
     @NotBlank(message = "Family is mandatory !")
@@ -59,5 +73,23 @@ public class PatientController {
     @RequestBody @Valid PatientDTO patientDTO) {
     return patientService.insert(patientDTO);
   }
+
+  @DeleteMapping("/delete")
+  public String delete(
+    @NotBlank(message = "Family is mandatory !")
+    @RequestParam("family") String lastname,
+
+    @NotBlank(message = "Given is mandatory !")
+    @RequestParam("given") String firstname,
+
+    @PastOrPresent(message = "Date of birth must be past or present !")
+    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date dob
+  ){
+    patientService.delete(
+      findByLastnameAndFirstnameAndBirthDate(lastname, firstname, dob)
+    );
+    return "delete successful !";
+  }
+
 
 }

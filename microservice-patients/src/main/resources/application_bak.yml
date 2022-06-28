@@ -1,7 +1,6 @@
 server:
   port: 8081
 
-
 spring:
   application:
     name: 'microservice-patients'
@@ -16,7 +15,6 @@ spring:
     username: 'diabetecareusr'
     password: 'diabetecare123'
     initialize: 'true'
-
 
 #Eureka
 eureka:
