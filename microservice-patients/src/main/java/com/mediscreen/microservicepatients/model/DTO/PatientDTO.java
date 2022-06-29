@@ -1,6 +1,7 @@
 package com.mediscreen.microservicepatients.model.DTO;
 
 import com.mediscreen.microservicepatients.model.Gender;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -18,10 +19,13 @@ public class PatientDTO {
   private Date dob;
   @NotNull(message = "Gender is mandatory !")
   private Gender gender;
-  @NotBlank(message = "Address is mandatory !")
+
   private String address;
-  @NotBlank(message = "Phone is mandatory !")
-  @Pattern(regexp = "^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$")
+
+  // The pattern corresponds to US phone number with a number 'n' so it has to correspond to
+  // 'nnn-nnn-nnnn' or the pattern has to correspond to an empty string.
+  @Pattern(message = "must be a properly written US phone number, i.e : 123-456-7890",
+  regexp = "^(?:(\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4}))|)$")
   private String phone;
 
   public PatientDTO(){

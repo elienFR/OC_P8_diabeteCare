@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
 import java.sql.Date;
 
 
@@ -18,20 +19,27 @@ public class Patient {
   @Column(name = "firstname")
   @NotBlank(message="firstname is mandatory !")
   private String firstname;
+
   @Column(name="lastname")
   @NotBlank(message="lastname is mandatory !")
   private String lastname;
+
   @Column(name = "dob")
   @PastOrPresent(message = "Date of birth must be past or present !")
   private Date birthdate;
+
   @Column(name = "gender")
   @NotNull(message="gender is mandatory !")
   private Gender gender;
+
   @Column(name = "address")
-  @NotBlank(message="address is mandatory !")
   private String address;
+
   @Column(name = "phone")
-  @NotBlank(message="phone number is mandatory !")
+  // The pattern corresponds to US phone number with a number 'n' so it has to correspond to
+  // 'nnn-nnn-nnnn' or the pattern has to correspond to an empty string.
+  @Pattern(message = "must be a properly written US phone number, i.e : 123-456-7890",
+    regexp = "^(?:(\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4}))|)$")
   private String phoneNumber;
 
   public Patient(){
