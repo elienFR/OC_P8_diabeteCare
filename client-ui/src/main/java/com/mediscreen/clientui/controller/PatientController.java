@@ -26,7 +26,7 @@ public class PatientController {
   private PatientService patientService;
 
   @GetMapping("/search")
-  public String find(PatientDTO patientDTO){
+  public String find(PatientDTO patientDTO) {
     LOGGER.info("GET : /patient/search");
     return "patient/search";
   }

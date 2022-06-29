@@ -9,7 +9,7 @@ spring:
 
 localConfig:
   microServicePatients:
-    uri: 'localhost:8090/patient'
+    uri: 'lb://api-gateway/patient'
 
 #Eureka
 eureka:
