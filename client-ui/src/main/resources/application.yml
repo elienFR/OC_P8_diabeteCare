@@ -1,0 +1,30 @@
+server:
+  port:
+    8080
+
+spring:
+  application:
+    name: 'client-ui'
+
+
+localConfig:
+  microServicePatients:
+    uri: 'localhost:8090/patient'
+
+#Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:9102/eureka/'
+    registerWithEureka: 'true'
+    fetchRegistry: 'true'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - mappings
+          - env
+          - health
+          - info

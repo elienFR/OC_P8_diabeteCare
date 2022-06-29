@@ -56,8 +56,7 @@ public class PatientController {
     @RequestParam("given") String firstname,
 
     @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
-    @RequestParam("dob") String birthdate
-  ) {
+    @RequestParam("dob") String birthdate) {
     Optional<PatientDTO> optionalPatientDTO =
       patientService.findPatientDTOByLastnameAndFirstnameAndBirthdate(
         lastname,

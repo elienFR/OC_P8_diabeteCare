@@ -1,0 +1,50 @@
+package com.mediscreen.clientui.controller;
+
+import com.mediscreen.clientui.model.beans.PatientDTO;
+import com.mediscreen.clientui.service.PatientService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.Valid;
+
+@Controller
+@RequestMapping("/patient")
+public class PatientController {
+
+  private static final Logger LOGGER = LogManager.getLogger(PatientController.class);
+
+  @Autowired
+  private PatientService patientService;
+
+  @GetMapping("/search")
+  public String find(PatientDTO patientDTO){
+    LOGGER.info("GET : /patient/search");
+    return "patient/search";
+  }
+
+  @PostMapping("/search/validate")
+  public String findValidation(@Valid PatientDTO patientDTO,
+                               BindingResult result,
+                               Model model) {
+    LOGGER.info("POST : /patient/search/validate");
+    //TODO : handle 404 from feign here
+    model.addAttribute("patientDTO", patientService.getPatient(patientDTO));
+    return "patient/found";
+  }
+
+  @GetMapping("/update")
+  public String update() {
+    return "patient/update";
+  }
+
+
+}
