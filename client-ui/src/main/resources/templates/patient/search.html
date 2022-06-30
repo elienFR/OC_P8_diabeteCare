@@ -95,6 +95,7 @@
               <input id="inputBirthdate" class="form-control" type="date" th:field="*{dob}" name="birthdate"
                      aria-label="birthdate" aria-describedby="labelBirthdate" required>
             </div>
+            <p class="text-danger" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></p>
           </div>
 
           <div class="mt-3">
