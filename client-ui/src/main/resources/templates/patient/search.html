@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-  <title>Pay My Buddy - Find Patient</title>
+  <title>DiabeteCare - Find Patient</title>
 
   <style>
         .breadcrumb {
@@ -49,7 +49,7 @@
     <div class="col-0 col-md-1 col-lg-2">
     </div>
 
-    <!--This is main content in body space on left side-->
+    <!--This is main content in body-->
     <div class="col-12 col-md-10 col-lg-8">
       <div class="row row-cols-xs-3">
         <div class="col d-flex flex-column justify-content-center mb-2 mb-sm-0">
@@ -60,7 +60,7 @@
 
       <div class="row bg-light rounded-3">
         <!-- Form for profile Modification -->
-        <form action="#" method="post" th:action="@{/patient/search/validate}" th:object="${patientDTO}"
+        <form action="#" method="post" th:action="@{/patient/search/validate}" th:object="${patientDTOForSearch}"
               class="p-0 p-md-3">
           <div class="row">
             <div class="col">
@@ -86,6 +86,8 @@
                      aria-label="lastname" aria-describedby="labelLastname" placeholder="Lastname"
                      th:placeholder="#{search.lastnamePlaceholder}" th:value="${userLastName}">
             </div>
+            <p class="text-danger" th:if="${#fields.hasErrors('given')}" th:errors="*{given}"></p>
+            <p class="text-danger" th:if="${#fields.hasErrors('family')}" th:errors="*{family}"></p>
             <div class="input-group py-2">
                 <span class="input-group-text" id="labelBirthdate"
                       th:text="#{search.birthdate}">Birthdate</span>

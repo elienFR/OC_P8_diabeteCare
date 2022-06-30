@@ -3,7 +3,8 @@ package com.mediscreen.microservicepatients.model;
 public enum Gender {
   F("female"),
   M("male"),
-  NB("non-binary");
+  NB("non-binary"),
+  NA("not communicated");
 
   final String name;
 
