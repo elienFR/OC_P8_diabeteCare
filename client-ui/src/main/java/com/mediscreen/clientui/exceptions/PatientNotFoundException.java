@@ -1,4 +1,4 @@
-package com.mediscreen.microservicepatients.controller.exceptions;
+package com.mediscreen.clientui.exceptions;
 
 
 public class PatientNotFoundException extends RuntimeException {

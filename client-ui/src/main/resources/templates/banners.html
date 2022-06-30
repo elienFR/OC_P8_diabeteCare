@@ -44,6 +44,15 @@
         </div>
     </div>
 
+    <!-- Email not filled in profile without link-->
+    <div class="row" th:if="${patientNotFound}" th:fragment="patientNotFound">
+      <div class="col">
+        <div class="alert alert-warning">
+          <span th:text="#{warning.patientNotFound}">The patient you are looking for has not been found.</span>
+        </div>
+      </div>
+    </div>
+
     <!-- connection add alert -->
     <div class="row" th:if="${param.addConnectionSuccessful}" th:fragment="connectionAddedSuccessful">
         <div class="col">

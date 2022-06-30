@@ -1,11 +1,13 @@
 package com.mediscreen.microservicepatients.service;
 
-import com.mediscreen.microservicepatients.controller.exceptions.AlreadyExistException;
-import com.mediscreen.microservicepatients.controller.exceptions.PatientNotFoundException;
+import com.mediscreen.microservicepatients.exceptions.AlreadyExistsException;
+import com.mediscreen.microservicepatients.exceptions.PatientNotFoundException;
 import com.mediscreen.microservicepatients.model.DTO.PatientDTO;
 import com.mediscreen.microservicepatients.model.Gender;
 import com.mediscreen.microservicepatients.model.Patient;
 import com.mediscreen.microservicepatients.repository.PatientRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,11 +26,14 @@ import java.util.stream.StreamSupport;
 @Transactional
 public class PatientService {
 
+  private static final Logger LOGGER = LogManager.getLogger(PatientService.class);
+
   @Autowired
   private PatientRepository patientRepository;
 
 
   public List<PatientDTO> getAll() {
+    LOGGER.info("Fetching all patients in DB.");
     return StreamSupport
       .stream(patientRepository.findAll().spliterator(), false)
       .map(patient -> {
@@ -60,10 +65,12 @@ public class PatientService {
         phone
       );
     try {
+      LOGGER.info("Trying to save patient.");
       return insert(patientDTOToSave);
     } catch (SQLException e) {
       e.printStackTrace();
-      throw new AlreadyExistException("This patient already exists");
+      LOGGER.warn("Error occured. Throwing exception AlreadyExistsException");
+      throw new AlreadyExistsException("This patient already exists");
     }
   }
 
@@ -125,19 +132,26 @@ public class PatientService {
    *
    * @param lastname  is the patient family name
    * @param firstname is the patient firstname
-   * @param birthDate is the patient date of birth
+   * @param birthdate is the patient date of birth
    * @return a patient DTO object
    */
   public Optional<PatientDTO> findPatientDTOByLastnameAndFirstnameAndBirthdate(
     String lastname,
     String firstname,
-    String birthDate) {
-    Date birthdateSQL = convertInDateSql(birthDate);
+    String birthdate) {
+    LOGGER.info("Fetching patient : " +
+      "lastname : " + lastname +
+      "firstname : " + firstname +
+      "birthdate : " + birthdate +
+      ".");
+    Date birthdateSQL = convertInDateSql(birthdate);
     Optional<Patient> optionalPatient =
       findPatientByLastnameAndFirstnameAndBirthdate(lastname, firstname, birthdateSQL);
     if (optionalPatient.isPresent()) {
+      LOGGER.info("Patient found !");
       return convertToPatientDTO(optionalPatient.get());
     } else {
+      LOGGER.info("No patient found in DB !");
       return Optional.empty();
     }
   }
@@ -183,20 +197,26 @@ public class PatientService {
     Gender gender,
     String address,
     String phone) {
+    LOGGER.info("Finding already existing patient...");
     Optional<Patient> optionalPatient = findPatientByLastnameAndFirstnameAndBirthdate(
       lastname,
       firstname,
       convertInDateSql(birthdate)
     );
     if (optionalPatient.isPresent()) {
+      LOGGER.info("Patient found.");
       // an update do not change first name, lastname, and birthdate as they are used as unique key in DB.
+      LOGGER.info("Updating already existing patient...");
       Patient patientToUpdate = optionalPatient.get();
       patientToUpdate.setGender(gender);
       patientToUpdate.setAddress(address);
       patientToUpdate.setPhoneNumber(phone);
+      LOGGER.info("Saving updated patient...");
       Optional<PatientDTO> optionalPatientDTOConverted = convertToPatientDTO(save(patientToUpdate));
+      LOGGER.info("Updated patient saved !");
       return optionalPatientDTOConverted.orElse(null);
     } else {
+      LOGGER.warn("Patient not found. Throwing exception.");
       throw new PatientNotFoundException("The patient you try to update has not been found !");
     }
 

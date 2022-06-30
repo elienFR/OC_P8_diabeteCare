@@ -1,4 +1,4 @@
-package com.mediscreen.microservicepatients.controller.exceptions;
+package com.mediscreen.microservicepatients.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

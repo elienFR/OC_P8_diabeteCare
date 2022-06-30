@@ -1,10 +1,13 @@
 package com.mediscreen.clientui.controller;
 
+import com.mediscreen.clientui.exceptions.PatientNotFoundException;
+import com.mediscreen.clientui.model.beans.PatientDTO;
 import com.mediscreen.clientui.model.beans.PatientDTOForSearch;
 import com.mediscreen.clientui.service.PatientService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,12 +40,20 @@ public class PatientController {
     LOGGER.info("Validating entries...");
     if (!result.hasErrors()) {
       LOGGER.info("No error found in entry.");
-
+      //TODO : future date does not alert user. Correct that.
       //TODO : handle custom validation messages see https://www.baeldung.com/spring-custom-validation-message-source
       //TODO : handle 404 from feign here
 
-      model.addAttribute("patientDTOFound", patientService.getPatient(patientDTOForSearch));
-      return "patient/found";
+      try {
+        model.addAttribute("patientDTOFound", patientService.getPatient(patientDTOForSearch));
+        return "patient/found";
+      } catch (PatientNotFoundException e) {
+        model.addAttribute("patientDTOFound", new PatientDTO());
+        model.addAttribute("patientNotFound", true);
+        return "patient/found";
+      } catch (Exception e) {
+        return "../static/error/500";
+      }
     }
     LOGGER.info("Error found, searching aborted.");
     return "patient/search";

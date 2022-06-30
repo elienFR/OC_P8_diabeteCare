@@ -24,6 +24,8 @@
 
 
 
+
+
   </style>
 
 </head>
@@ -78,13 +80,12 @@
                                   th:text="#{search.firstname}">Firstname</span>
               <input id="inputFirstname" class="form-control" type="text" th:field="*{given}" name="firstName"
                      aria-label="firstname" aria-describedby="labelFirstname" placeholder="Firstname"
-                     th:placeholder="#{search.firstnamePlaceholder}" th:value="${userFirstName}"
-                     required>
+                     th:placeholder="#{search.firstnamePlaceholder}" th:value="${userFirstName}" required>
               <span class="input-group-text" id="labelLastname"
                     th:text="#{search.lastname}">Lastname</span>
               <input id="inputLastname" class="form-control" type="text" th:field="*{family}" name="lastName"
                      aria-label="lastname" aria-describedby="labelLastname" placeholder="Lastname"
-                     th:placeholder="#{search.lastnamePlaceholder}" th:value="${userLastName}">
+                     th:placeholder="#{search.lastnamePlaceholder}" th:value="${userLastName}" required>
             </div>
             <p class="text-danger" th:if="${#fields.hasErrors('given')}" th:errors="*{given}"></p>
             <p class="text-danger" th:if="${#fields.hasErrors('family')}" th:errors="*{family}"></p>
@@ -92,7 +93,7 @@
                 <span class="input-group-text" id="labelBirthdate"
                       th:text="#{search.birthdate}">Birthdate</span>
               <input id="inputBirthdate" class="form-control" type="date" th:field="*{dob}" name="birthdate"
-              aria-label="birthdate" aria-describedby="labelBirthdate">
+                     aria-label="birthdate" aria-describedby="labelBirthdate" required>
             </div>
           </div>
 

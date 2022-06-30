@@ -1,4 +1,4 @@
-package com.mediscreen.microservicepatients.controller.exceptions;
+package com.mediscreen.microservicepatients.exceptions;
 
 public class UnableToDeleteException extends RuntimeException {
 

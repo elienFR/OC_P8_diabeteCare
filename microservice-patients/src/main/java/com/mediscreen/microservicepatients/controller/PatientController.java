@@ -1,28 +1,22 @@
 package com.mediscreen.microservicepatients.controller;
 
-import com.mediscreen.microservicepatients.controller.exceptions.AlreadyExistException;
-import com.mediscreen.microservicepatients.controller.exceptions.PatientNotFoundException;
+import com.mediscreen.microservicepatients.exceptions.AlreadyExistsException;
+import com.mediscreen.microservicepatients.exceptions.PatientNotFoundException;
 import com.mediscreen.microservicepatients.model.DTO.PatientDTO;
 import com.mediscreen.microservicepatients.model.Gender;
 import com.mediscreen.microservicepatients.service.PatientService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
-import java.net.URI;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -30,11 +24,14 @@ import java.util.Optional;
 @RequestMapping("/api" + "/${api.ver}" + "/patient")
 public class PatientController {
 
+  private static final Logger LOGGER = LogManager.getLogger(PatientController.class);
+
   @Autowired
   private PatientService patientService;
 
   @GetMapping("/all")
   public List<PatientDTO> getAll() {
+    LOGGER.info("GET : /api/${api.ver}/patient/all");
     return patientService.getAll();
   }
 
@@ -57,16 +54,19 @@ public class PatientController {
 
     @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
     @RequestParam("dob") String birthdate) {
-    Optional<PatientDTO> optionalPatientDTO =
+    LOGGER.info("GET : /api/${api.ver}/patient/patient?family="
+      + lastname + "&given=" + firstname + "&dob=" + birthdate);
+      Optional<PatientDTO> optionalPatientDTO =
       patientService.findPatientDTOByLastnameAndFirstnameAndBirthdate(
         lastname,
         firstname,
         birthdate);
     if (optionalPatientDTO.isEmpty()) {
+      LOGGER.warn("Displaying 404 not found...");
       return patientNotFound();
-    } else {
-      return ResponseEntity.ok(optionalPatientDTO.get());
     }
+    LOGGER.info("Displaying patient info...");
+    return ResponseEntity.ok(optionalPatientDTO.get());
   }
 
   @PostMapping("/add")
@@ -93,9 +93,11 @@ public class PatientController {
     try {
       PatientDTO patientDTOAdded =
         patientService.insert(lastname, firstname, birthdate, gender, addressNumberAndStreet, phone);
+      LOGGER.info("Displaying 201 CREATED + added patient info...");
       return ResponseEntity.status(HttpStatus.CREATED).body(patientDTOAdded);
-    } catch (AlreadyExistException e) {
+    } catch (AlreadyExistsException e) {
       e.printStackTrace();
+      LOGGER.info("Displaying 409 CONFLICT...");
       return ResponseEntity.status(HttpStatus.CONFLICT).body("This patient already exists.");
     }
   }
@@ -122,12 +124,14 @@ public class PatientController {
     @Pattern(message = "must be a properly written US phone number, i.e : 123-456-7890",
       regexp = "^(?:(\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4}))|)$") String phone) {
     try {
+      LOGGER.info("Trying to update patient.");
       return ResponseEntity.ok(
         patientService
           .update(lastname, firstname, birthdate, gender, addressNumberAndStreet, phone)
       );
     } catch (PatientNotFoundException e) {
       e.printStackTrace();
+      LOGGER.warn("Displaying 404 not found...");
       return patientNotFound();
     }
   }
@@ -146,6 +150,7 @@ public class PatientController {
     if (patientService.delete(lastname, firstname, birthdate)) {
       return ResponseEntity.ok("Deletion successful !");
     } else {
+      LOGGER.warn("Displaying 404 not found...");
       return patientNotFound();
     }
   }
