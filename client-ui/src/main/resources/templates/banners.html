@@ -53,6 +53,16 @@
       </div>
     </div>
 
+    <!-- already exists patient -->
+    <div class="row" th:if="${patientAlreadyExists}" th:fragment="patientAlreadyExists">
+      <div class="col">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <span th:text="#{warning.alreadyExistsSentence}">This patient already exists. It has not been added</span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+
     <!-- connection add alert -->
     <div class="row" th:if="${param.addConnectionSuccessful}" th:fragment="connectionAddedSuccessful">
         <div class="col">

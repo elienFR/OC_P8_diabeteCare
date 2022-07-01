@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <title>DiabeteCare - Found</title>
+
+  <style>
+    .breadcrumb {
+        box-shadow: 0px 0px #d5d4d4;
+        /*background: #eeeded;*/
+        background: #f5f5f5;
+        border: 0px solid #eeeded;
+        border-radius: 0px;
+        padding: 0 5px 0 10px !important;
+        font-size: 16px;
+        line-height:2em;
+    }
+
+
+
+
+
+  </style>
+
+</head>
+<body>
+<div class="card" style="width: 18 rem;" th:fragment="patientCard">
+  <div class="card-body">
+    <h5 class="card-title text-capitalize" th:text="#{found.cardTitle}">patient's folder</h5>
+    <h6 class="card-subtitle mb-2 text-muted">
+      <span class="text-capitalize" th:text="${patientDTOFound.given}">
+        firstname
+      </span>
+      <span class="text-capitalize" th:text="${patientDTOFound.family}">
+        lastname
+      </span>
+    </h6>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><span class="text-capitalize" th:text="#{word.birthdate}">birthdate</span> :
+      <span th:text="${patientDTOFound.dob}">
+      </span>
+    </li>
+    <li class="list-group-item">
+      <span class="text-capitalize" th:text="#{word.sex}">
+        sex
+      </span> : <span th:text="${patientDTOFound.gender.name}"></span>
+    </li>
+    <li class="list-group-item">
+      <span class="text-capitalize" th:text="#{word.address}">
+        address
+      </span> : <span th:text="${patientDTOFound.address}"></span>
+    </li>
+    <li class="list-group-item">
+      <span class="text-capitalize" th:text="#{word.phone}">
+        phone
+      </span> : <span th:text="${patientDTOFound.phone}"></span>
+    </li>
+  </ul>
+  <div class="card-body">
+    <div class="mt-3">
+      <a class="btn btn-primary" role="button" href="/patient/update" alt="update"><span class="text-capitalize"
+                                                                                         th:text="#{word.update}">update</span>
+        ?</a>
+      <a class="btn btn-secondary" role="button" href="/patient/search" alt="cancel" th:text="#{btn.cancel}">Cancel</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+<script src="../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

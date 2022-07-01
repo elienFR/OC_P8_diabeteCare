@@ -9,9 +9,13 @@ public class CustomErrorDecoder implements ErrorDecoder {
 
   @Override
   public Exception decode(String invoker, Response response) {
-    if(response.status() == 404){
+    if (response.status() == 404) {
       return new PatientNotFoundException(
         "Patient not found."
+      );
+    } else if (response.status() == 409) {
+      return new AlreadyExistsException(
+        "Patient already exists."
       );
     }
     return defaultErrorDecoder.decode(invoker, response);

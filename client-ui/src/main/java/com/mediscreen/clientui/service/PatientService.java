@@ -1,6 +1,7 @@
 package com.mediscreen.clientui.service;
 
 import com.mediscreen.clientui.controller.PatientController;
+import com.mediscreen.clientui.exceptions.AlreadyExistsException;
 import com.mediscreen.clientui.model.beans.PatientDTO;
 import com.mediscreen.clientui.model.beans.PatientDTOForSearch;
 import com.mediscreen.clientui.proxy.MicroservicePatientsGatewayProxy;
@@ -30,5 +31,26 @@ public class PatientService {
       patientDTO.getGiven(),
       patientDTO.getDob().toString()
     );
+  }
+
+  public PatientDTO save(@Valid PatientDTO patientDTO) {
+    LOGGER.info("Saving patient...");
+    try {
+      PatientDTO savedPatient = microservicePatientsGatewayProxy.insert(
+        patientDTO.getFamily(),
+        patientDTO.getGiven(),
+        patientDTO.getDob().toString(),
+        patientDTO.getGender(),
+        patientDTO.getAddress(),
+        patientDTO.getPhone()
+      );
+      LOGGER.info("Patient : " + savedPatient);
+      return savedPatient;
+    } catch (AlreadyExistsException aee){
+      throw new AlreadyExistsException(aee.getMessage());
+    } catch(Exception e){
+      e.printStackTrace();
+      return null;
+    }
   }
 }

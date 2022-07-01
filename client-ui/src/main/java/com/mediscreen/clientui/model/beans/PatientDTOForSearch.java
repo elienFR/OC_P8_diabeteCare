@@ -1,6 +1,7 @@
 package com.mediscreen.clientui.model.beans;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.sql.Date;
 
@@ -10,6 +11,7 @@ public class PatientDTOForSearch {
   private String family;
   @NotBlank(message = "Firstname is mandatory !")
   private String given;
+  @NotNull(message = "Date of birth is mandatory !")
   @PastOrPresent(message = "Date of birth must be past or present !")
   private Date dob;
 

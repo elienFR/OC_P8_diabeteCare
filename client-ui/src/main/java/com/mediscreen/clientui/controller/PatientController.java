@@ -1,5 +1,6 @@
 package com.mediscreen.clientui.controller;
 
+import com.mediscreen.clientui.exceptions.AlreadyExistsException;
 import com.mediscreen.clientui.exceptions.PatientNotFoundException;
 import com.mediscreen.clientui.model.beans.PatientDTO;
 import com.mediscreen.clientui.model.beans.PatientDTOForSearch;
@@ -42,8 +43,6 @@ public class PatientController {
       LOGGER.info("No error found in entry.");
       //TODO : future date does not alert user. Correct that.
       //TODO : handle custom validation messages see https://www.baeldung.com/spring-custom-validation-message-source
-      //TODO : handle 404 from feign here
-
       try {
         model.addAttribute("patientDTOFound", patientService.getPatient(patientDTOForSearch));
         return "patient/found";
@@ -57,6 +56,41 @@ public class PatientController {
     }
     LOGGER.info("Error found, searching aborted.");
     return "patient/search";
+  }
+
+  @GetMapping("/add")
+  public String add(PatientDTO patientDTO) {
+    LOGGER.info("GET : /patient/add...");
+    return "patient/add";
+  }
+
+  @PostMapping("/add/validate")
+  public String addValidated(@Valid PatientDTO patientDTO,
+                             BindingResult results,
+                             Model model) {
+    LOGGER.info("POST : /patient/add/validate...");
+    LOGGER.info("Posted patient is \n" + patientDTO.toString());
+    if (!results.hasErrors()) {
+      try {
+        PatientDTO patientSaved = patientService.save(patientDTO);
+        model.addAttribute("patientDTOFound", patientSaved);
+        return "/patient/added";
+      } catch (AlreadyExistsException aee) {
+        LOGGER.warn("patient already exists, it wont be saved.");
+        model.addAttribute("patientAlreadyExists",true);
+        return "/patient/add";
+      } catch (Exception e) {
+        e.printStackTrace();
+        return "/patient/add";
+      }
+    }
+    LOGGER.warn("Error found in patientDTO object...");
+    results.getAllErrors().forEach(
+      e ->
+        LOGGER.warn(e.getDefaultMessage())
+
+    );
+    return "/patient/add";
   }
 
   @GetMapping("/update")
