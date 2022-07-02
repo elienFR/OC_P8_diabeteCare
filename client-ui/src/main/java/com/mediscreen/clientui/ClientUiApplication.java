@@ -11,7 +11,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients("com.mediscreen.clientui")
 @EnableDiscoveryClient
 public class ClientUiApplication {
-// TODO : externalize conf file through bootstrap.yml
   @Autowired
   private PatientService patientService;
 
