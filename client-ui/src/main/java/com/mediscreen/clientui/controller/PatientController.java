@@ -8,7 +8,6 @@ import com.mediscreen.clientui.service.PatientService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,8 +40,6 @@ public class PatientController {
     LOGGER.info("Validating entries...");
     if (!result.hasErrors()) {
       LOGGER.info("No error found in entry.");
-      //TODO : future date does not alert user. Correct that.
-      //TODO : handle custom validation messages see https://www.baeldung.com/spring-custom-validation-message-source
       try {
         model.addAttribute("patientDTOFound", patientService.getPatient(patientDTOForSearch));
         return "patient/found";
@@ -77,7 +74,7 @@ public class PatientController {
         return "/patient/added";
       } catch (AlreadyExistsException aee) {
         LOGGER.warn("patient already exists, it wont be saved.");
-        model.addAttribute("patientAlreadyExists",true);
+        model.addAttribute("patientAlreadyExists", true);
         return "/patient/add";
       } catch (Exception e) {
         e.printStackTrace();
@@ -93,8 +90,48 @@ public class PatientController {
     return "/patient/add";
   }
 
-  @GetMapping("/update")
-  public String update() {
+  @PostMapping("/update")
+  public String updateFromSearch(PatientDTO patientDTO,
+                                 Model model) {
+    LOGGER.info("POST : /patient/update");
+    model.addAttribute("initialFamily", patientDTO.getFamily());
+    model.addAttribute("initialGiven", patientDTO.getGiven());
+    model.addAttribute("initialDob", patientDTO.getDob().toString());
+    return "patient/update";
+  }
+
+  @PostMapping("/update/validate")
+  public String updateValidation(@Valid PatientDTO patientDTO,
+                                 BindingResult results,
+                                 String initialFamily,
+                                 String initialGiven,
+                                 String initialDob,
+                                 Model model) {
+    LOGGER.info("POST : /patient/update/validate");
+    model.addAttribute("initialFamily", patientDTO.getFamily());
+    model.addAttribute("initialGiven", patientDTO.getGiven());
+    model.addAttribute("initialDob", patientDTO.getDob().toString());
+    if (!results.hasErrors()) {
+      try {
+        LOGGER.info("Updating patient...");
+        PatientDTO updatedPatient = patientService.updatePatient(
+          initialFamily,
+          initialGiven,
+          initialDob,
+          patientDTO
+        );
+        LOGGER.info("Patient successfully updated;");
+        model.addAttribute("updateSuccessful", true);
+        model.addAttribute("patientDTOFound", updatedPatient);
+        return "patient/found";
+      } catch (Exception e) {
+        LOGGER.error("An error occurred during update...");
+        e.printStackTrace();
+      }
+      LOGGER.error("An error occurred during update...");
+      return "patient/update";
+    }
+    LOGGER.error("The patient provided could not pass validation tests...");
     return "patient/update";
   }
 

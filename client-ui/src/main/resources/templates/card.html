@@ -26,6 +26,9 @@
 
 
 
+
+
+
   </style>
 
 </head>
@@ -64,12 +67,25 @@
     </li>
   </ul>
   <div class="card-body">
-    <div class="mt-3">
-      <a class="btn btn-primary" role="button" href="/patient/update" alt="update"><span class="text-capitalize"
-                                                                                         th:text="#{word.update}">update</span>
-        ?</a>
-      <a class="btn btn-secondary" role="button" href="/patient/search" alt="cancel" th:text="#{btn.cancel}">Cancel</a>
-    </div>
+    <form action="#" method="post" th:action="@{/patient/update}">
+      <div hidden>
+        <input name="family" th:value="${patientDTOFound.family}">
+        <input name="given" th:value="${patientDTOFound.given}">
+        <input name="dob" th:value="${patientDTOFound.dob}">
+        <input name="gender" th:value="${patientDTOFound.gender.name}">
+        <input name="address" th:value="${patientDTOFound.address}">
+        <input name="phone" th:value="${patientDTOFound.phone}">
+      </div>
+      <div class="mt-3">
+        <button type="submit" class="btn btn-primary">
+          <span class="text-capitalize" th:text="#{word.update}">
+            update
+          </span>
+        </button>
+        <a class="btn btn-secondary" role="button" href="/patient/search" alt="cancel"
+           th:text="#{btn.cancel}">Cancel</a>
+      </div>
+    </form>
   </div>
 </div>
 

@@ -42,14 +42,14 @@
                     <li class="nav-item text-capitalize">
                         <a class="nav-link" href="/patient/add" th:text="#{word.add}">Add</a>
                     </li>
-                    <li class="nav-item text-capitalize">
+                    <li class="nav-item text-capitalize" th:if="false">
                         <a class="nav-link" href="/patient/update" th:text="#{word.update}">Update</a>
                     </li>
-<!--                    <li class="nav-item">-->
-<!--                        <form th:action="@{/logout_perform}" method="post">-->
-<!--                            <button class="nav-link btn btn-link" type="submit" value="Logout" th:text="#{menu.logOff}">Log off</button>-->
-<!--                        </form>-->
-<!--                    </li>-->
+                    <li class="nav-item" th:if="false">
+                        <form th:action="@{/logout_perform}" method="post">
+                            <button class="nav-link btn btn-link" type="submit" value="Logout" th:text="#{menu.logOff}">Log off</button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>

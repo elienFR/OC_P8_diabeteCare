@@ -52,13 +52,17 @@
       <div class="row bg-light rounded-3 p-3">
 
         <!--That is the bundle if the patient has not been found-->
-        <div th:if="${patientNotFound}" >
+        <div th:if="!${patientDTOFound.given ne null}" >
           <div th:insert="banners :: patientNotFound"></div>
           <a class="btn btn-primary text-capitalize" role="button" href="/patient/search" alt="back" th:text="#{word.back}">Back</a>
         </div>
 
+        <div th:if="${updateSuccessful}" >
+          <div th:insert="banners :: patientUpdateSuccessful"></div>
+        </div>
+
         <!--That is the card of the patient folder-->
-        <div th:if="!${patientNotFound}">
+        <div th:if="${patientDTOFound.given ne null}">
           <div th:insert="card :: patientCard"></div>
         </div>
       </div>

@@ -63,6 +63,18 @@
       </div>
     </div>
 
+    <!-- patient update successful -->
+    <div class="row" th:if="${updateSuccessful}" th:fragment="patientUpdateSuccessful">
+      <div class="col">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <span th:text="#{bnr.patientUpdated}">
+            Patient updated !
+          </span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+
     <!-- connection add alert -->
     <div class="row" th:if="${param.addConnectionSuccessful}" th:fragment="connectionAddedSuccessful">
         <div class="col">
