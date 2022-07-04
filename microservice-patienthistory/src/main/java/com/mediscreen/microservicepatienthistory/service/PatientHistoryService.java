@@ -6,8 +6,12 @@ import org.apache.juli.logging.Log;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +25,7 @@ public class PatientHistoryService {
 
   public PatientHistory insert(PatientHistory patientHistory) {
     LOGGER.info("Inserting " + patientHistory + " into database.");
+    patientHistory.setLocalDateTime(LocalDateTime.now());
     return patientHistoryRepository.insert(patientHistory);
   }
 
@@ -34,4 +39,6 @@ public class PatientHistoryService {
     }
     return Optional.empty();
   }
+
+
 }

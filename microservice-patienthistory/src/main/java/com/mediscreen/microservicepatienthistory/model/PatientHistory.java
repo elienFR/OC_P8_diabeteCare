@@ -5,7 +5,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Document(collection = "patientHistory")
 @Transactional
@@ -23,12 +26,11 @@ public class PatientHistory {
   @NotBlank(message = "The patient's notes must not be blank")
   private String notes;
 
+  @Field(name = "datetime")
+  private LocalDateTime localDateTime;
+
   public String getId() {
     return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public String getPatId() {
@@ -45,6 +47,14 @@ public class PatientHistory {
 
   public void setNotes(String notes) {
     this.notes = notes;
+  }
+
+  public LocalDateTime getLocalDateTime() {
+    return localDateTime;
+  }
+
+  public void setLocalDateTime(LocalDateTime localDateTime) {
+    this.localDateTime = localDateTime;
   }
 
   @Override
