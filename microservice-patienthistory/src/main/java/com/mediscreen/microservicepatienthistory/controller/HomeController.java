@@ -14,12 +14,12 @@ public class HomeController {
   private final static Logger LOGGER = LogManager.getLogger(HomeController.class);
 
   @Value("${api.ver}")
-  private String apiVersion;
+  String apiVer;
 
   @GetMapping("/")
   public String index(){
     LOGGER.info("GET : / --> Contacting index page...");
-    return "Welcome to microservice-historypatient version : " + apiVersion;
+    return "Welcome to microservice-historypatient's API version : " + apiVer;
   }
 
 }

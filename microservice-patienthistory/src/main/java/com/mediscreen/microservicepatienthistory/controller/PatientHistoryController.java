@@ -1,19 +1,19 @@
 package com.mediscreen.microservicepatienthistory.controller;
 
 import com.mediscreen.microservicepatienthistory.model.PatientHistory;
+import com.mediscreen.microservicepatienthistory.model.utils.layout.Paged;
 import com.mediscreen.microservicepatienthistory.service.PatientHistoryService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,9 +28,9 @@ public class PatientHistoryController {
   @GetMapping("/find")
   public ResponseEntity<Object> find(@RequestParam String patId) {
     LOGGER.info("GET : /find?patId=" + patId + " ...");
-    Optional<List<PatientHistory>> patientNotes = patientHistoryService.findByPatId(patId);
-    if (patientNotes.isPresent()) {
-      return ResponseEntity.ok(patientNotes.get());
+    List<PatientHistory> patientNotes = patientHistoryService.findByPatId(patId);
+    if (!patientNotes.isEmpty()) {
+      return ResponseEntity.ok(patientNotes);
     }
     LOGGER.warn("No notes found for patientId : " + patId);
     return ResponseEntity.ok("No notes found for patientId : " + patId);
@@ -54,6 +54,20 @@ public class PatientHistoryController {
           .map(ObjectError::getDefaultMessage)
           .collect(Collectors.toList())
       );
+  }
+
+  @GetMapping("/findPage")
+  public ResponseEntity<Object> findByPatIdPaged(@RequestParam String patId,
+                                                 @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                                                 @RequestParam(required = false, defaultValue = "5") Integer pageSize) {
+    LOGGER.info("GET : /find?patId=" + patId + "&pageNum=" + pageNum + "&pageSize=" + pageSize);
+    Paged<PatientHistory> patientHistoryPages = patientHistoryService
+      .findByPatIdPaged(pageNum, pageSize, patId);
+    if (patientHistoryPages.getPage().isEmpty()) {
+      return ResponseEntity.ok("No notes found");
+    } else {
+      return ResponseEntity.ok(patientHistoryPages);
+    }
   }
 
 }

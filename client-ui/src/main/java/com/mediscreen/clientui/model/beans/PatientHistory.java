@@ -1,32 +1,25 @@
-package com.mediscreen.microservicepatienthistory.model;
+package com.mediscreen.clientui.model.beans;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Document(collection = "patientHistory")
-@Transactional
 public class PatientHistory {
 
   @Id
   private String id;
 
   //That is the patient id
-  @Field(name = "patId")
   @NotBlank(message = "The patient's id must not be blank")
   private String patId;
 
-  @Field(name = "notes")
   @NotBlank(message = "The patient's notes must not be blank")
   private String notes;
 
-  @Field(name = "datetime")
   private LocalDateTime localDateTime;
 
   public String getId() {
@@ -62,7 +55,6 @@ public class PatientHistory {
     return "PatientHistory{" +
       "patId='" + patId + '\'' +
       ", notes='" + notes + '\'' +
-      ", localDateTime=" + localDateTime +
       '}';
   }
 }

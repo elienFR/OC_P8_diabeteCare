@@ -29,44 +29,76 @@
 
 
 
+
+
+
+
   </style>
 
 </head>
 <body>
-<div class="card" style="width: 18 rem;" th:fragment="patientCard">
+
+
+<!-- Card used with patient's notes -->
+<div class="card" style="width: 18 rem;" th:fragment="notePatientCard">
   <div class="card-body">
-    <h5 class="card-title text-capitalize" th:text="#{found.cardTitle}">patient's folder</h5>
+    <h5 class="card-title text-capitalize" th:text="#{patient.card.note.cardTitle}">patient's reminder</h5>
     <h6 class="card-subtitle mb-2 text-muted">
-      <span class="text-capitalize" th:text="${patientDTOFound.given}">
-        firstname
-      </span>
-      <span class="text-capitalize" th:text="${patientDTOFound.family}">
-        lastname
-      </span>
+          <span class="text-capitalize" th:text="${patientDTO.given}">
+            firstname
+          </span>
+      <span class="text-capitalize" th:text="${patientDTO.family}">
+            lastname
+          </span>
     </h6>
   </div>
   <ul class="list-group list-group-flush">
     <li class="list-group-item"><span class="text-capitalize" th:text="#{word.birthdate}">birthdate</span> :
-      <span th:text="${patientDTOFound.dob}">
-      </span>
+      <span th:text="${patientDTO.dob}">
+          </span>
     </li>
     <li class="list-group-item">
-      <span class="text-capitalize" th:text="#{word.sex}">
-        sex
-      </span> : <span th:text="${patientDTOFound.gender.name}"></span>
-    </li>
-    <li class="list-group-item">
-      <span class="text-capitalize" th:text="#{word.address}">
-        address
-      </span> : <span th:text="${patientDTOFound.address}"></span>
-    </li>
-    <li class="list-group-item">
-      <span class="text-capitalize" th:text="#{word.phone}">
-        phone
-      </span> : <span th:text="${patientDTOFound.phone}"></span>
+          <span class="text-capitalize" th:text="#{word.sex}">
+            sex
+          </span> : <span th:text="${patientDTO.gender.name}"></span>
     </li>
   </ul>
+</div>
+
+
+<!-- Card used with found patient -->
+<div class="card" style="width: 18 rem;" th:fragment="foundPatientCard">
   <div class="card-body">
+    <h5 class="card-title text-capitalize" th:text="#{found.cardTitle}">patient's folder</h5>
+    <h6 class="card-subtitle mb-2 text-muted">
+        <span class="text-capitalize" th:text="${patientDTOFound.given}">
+          firstname
+        </span>
+      <span class="text-capitalize" th:text="${patientDTOFound.family}">
+          lastname
+        </span>
+    </h6>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><span class="text-capitalize" th:text="#{word.birthdate}">birthdate</span> :
+        <span th:text="${patientDTOFound.dob}">
+        </span>
+      </li>
+      <li class="list-group-item">
+        <span class="text-capitalize" th:text="#{word.sex}">
+          sex
+        </span> : <span th:text="${patientDTOFound.gender.name}"></span>
+      </li>
+      <li class="list-group-item">
+        <span class="text-capitalize" th:text="#{word.address}">
+          address
+        </span> : <span th:text="${patientDTOFound.address}"></span>
+      </li>
+      <li class="list-group-item">
+        <span class="text-capitalize" th:text="#{word.phone}">
+          phone
+        </span> : <span th:text="${patientDTOFound.phone}"></span>
+      </li>
+    </ul>
     <form action="#" method="post" th:action="@{/patient/update}">
       <div hidden>
         <input name="family" th:value="${patientDTOFound.family}">
@@ -78,17 +110,32 @@
       </div>
       <div class="mt-3">
         <button type="submit" class="btn btn-primary">
-          <span class="text-capitalize" th:text="#{word.update}">
-            update
-          </span>
+            <span class="text-capitalize" th:text="#{word.update}">
+              update
+            </span>
         </button>
-        <a class="btn btn-secondary text-capitalize" role="button" href="/patHistory/find?" alt="patientsNotes"
-           th:text="#{btn.patientsNotes}">patients' notes</a>
         <a class="btn btn-danger text-capitalize" role="button" href="/patient/search" alt="cancel"
            th:text="#{btn.cancel}">cancel</a>
       </div>
     </form>
   </div>
+  <div class="card-body">
+    <form action="#" method="get" th:action="@{/patient/notes}">
+      <div hidden>
+        <input name="family" th:value="${patientDTOFound.family}">
+        <input name="given" th:value="${patientDTOFound.given}">
+        <input name="dob" th:value="${patientDTOFound.dob}">
+      </div>
+
+      <button type="submit" class="btn btn-secondary text-capitalize">
+            <span class="text-capitalize" th:text="#{btn.patientsNotes}">
+              patients' notes
+            </span>
+      </button>
+    </form>
+
+  </div>
+
 </div>
 
 

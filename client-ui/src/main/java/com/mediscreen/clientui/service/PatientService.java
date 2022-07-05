@@ -21,7 +21,7 @@ public class PatientService {
   @Autowired
   private MicroservicePatientsGatewayProxy microservicePatientsGatewayProxy;
 
-  private PatientDTO getPatient(String lastname, String firstname, String birthdate) {
+  public PatientDTO getPatient(String lastname, String firstname, String birthdate) {
     return microservicePatientsGatewayProxy.getPatient(lastname, firstname, birthdate);
   }
 
@@ -92,5 +92,20 @@ public class PatientService {
       e.printStackTrace();
       throw e;
     }
+  }
+
+  public String getId(PatientDTO patientDTO) {
+    LOGGER.info("Getting ID of patient " + patientDTO);
+    String patId = microservicePatientsGatewayProxy.getId(
+        patientDTO.getFamily(),
+        patientDTO.getGiven(),
+        patientDTO.getDob().toString())
+      .toString();
+    if (patId.isBlank()) {
+      LOGGER.warn("No such patient found. Id returned is null.");
+      return null;
+    }
+    LOGGER.info("Patient id is : patID=" + patId);
+    return patId;
   }
 }

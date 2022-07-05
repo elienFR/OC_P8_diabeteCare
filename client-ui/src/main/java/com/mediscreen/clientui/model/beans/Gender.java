@@ -1,4 +1,4 @@
-package com.mediscreen.clientui.model;
+package com.mediscreen.clientui.model.beans;
 
 public enum Gender {
   F("female"),

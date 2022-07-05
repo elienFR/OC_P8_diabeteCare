@@ -144,9 +144,8 @@ public class PatientService {
       "firstname : " + firstname +
       "birthdate : " + birthdate +
       ".");
-    Date birthdateSQL = convertInDateSql(birthdate);
     Optional<Patient> optionalPatient =
-      findPatientByLastnameAndFirstnameAndBirthdate(lastname, firstname, birthdateSQL);
+      findPatientByLastnameAndFirstnameAndBirthdate(lastname, firstname, birthdate);
     if (optionalPatient.isPresent()) {
       LOGGER.info("Patient found !");
       return convertToPatientDTO(optionalPatient.get());
@@ -166,26 +165,34 @@ public class PatientService {
     return new Date(dateUtil.getTime());
   }
 
-  private Optional<Patient> findPatientByLastnameAndFirstnameAndBirthdate(
-    String lastname,
-    String firstname,
-    Date birthdate) {
-
-    return patientRepository.findByLastnameAndFirstnameAndBirthdate(lastname, firstname, birthdate);
-
-  }
-
-
-  public boolean delete(String lastname, String firstname, String birthdate) {
-    Optional<Patient> optionalPatientToDelete = findPatientByLastnameAndFirstnameAndBirthdate(
+  private Optional<Patient> findPatientByLastnameAndFirstnameAndBirthdate(String lastname,
+                                                                          String firstname,
+                                                                          String birthdate) {
+    return patientRepository.findByLastnameAndFirstnameAndBirthdate(
       lastname,
       firstname,
       convertInDateSql(birthdate)
     );
+  }
+
+
+  public boolean delete(String lastname, String firstname, String birthdate) {
+    LOGGER.info("Deleting process started. Finding patient with " +
+      "lastname=" + lastname +
+      ", firstname=" + firstname +
+      ", birthdate=" + birthdate +
+      "...");
+    Optional<Patient> optionalPatientToDelete = findPatientByLastnameAndFirstnameAndBirthdate(
+      lastname,
+      firstname,
+      birthdate
+    );
     if (optionalPatientToDelete.isPresent()) {
+      LOGGER.info("Patient found in DB. Deleting...");
       patientRepository.delete(optionalPatientToDelete.get());
       return true;
     } else {
+      LOGGER.warn("Deletion abort because patient was not found...");
       return false;
     }
   }
@@ -201,7 +208,7 @@ public class PatientService {
     Optional<Patient> optionalPatient = findPatientByLastnameAndFirstnameAndBirthdate(
       lastname,
       firstname,
-      convertInDateSql(birthdate)
+      birthdate
     );
     if (optionalPatient.isPresent()) {
       LOGGER.info("Patient found.");
@@ -223,7 +230,24 @@ public class PatientService {
   }
 
   private Patient save(Patient patient) {
-    return patientRepository.save(patient);
+    LOGGER.info("Saving new patient to DB. \n" + patient);
+    if (Objects.isNull(patient.getId())) {
+      return patientRepository.save(patient);
+    }
+    LOGGER.error("You cannot save a new patient with a non null id.");
+    return null;
   }
 
+  public Integer getId(String lastname, String firstname, String birthdate) {
+    LOGGER.info("Beginning .getId(...) process...");
+    Optional<Patient> optPatient =
+      findPatientByLastnameAndFirstnameAndBirthdate(lastname, firstname, birthdate);
+    if (optPatient.isPresent()) {
+      Integer patId = optPatient.get().getId();
+      LOGGER.info("Patient found, patId=" + patId + ".");
+      return patId;
+    }
+    LOGGER.warn("No patient found. Id provided will be null.");
+    return null;
+  }
 }

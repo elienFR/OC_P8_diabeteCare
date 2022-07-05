@@ -63,7 +63,7 @@
 
         <!--That is the card of the patient folder-->
         <div th:if="${patientDTOFound.given ne null}">
-          <div th:insert="card :: patientCard"></div>
+          <div th:insert="card :: foundPatientCard"></div>
         </div>
       </div>
     </div>

@@ -4,10 +4,12 @@ import com.mediscreen.microservicepatients.exceptions.AlreadyExistsException;
 import com.mediscreen.microservicepatients.exceptions.PatientNotFoundException;
 import com.mediscreen.microservicepatients.model.DTO.PatientDTO;
 import com.mediscreen.microservicepatients.model.Gender;
+import com.mediscreen.microservicepatients.model.Patient;
 import com.mediscreen.microservicepatients.service.PatientService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +19,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -29,9 +32,12 @@ public class PatientController {
   @Autowired
   private PatientService patientService;
 
+  @Value("${api.ver}")
+  String apiVer;
+
   @GetMapping("/all")
   public List<PatientDTO> getAll() {
-    LOGGER.info("GET : /api/${api.ver}/patient/all");
+    LOGGER.info("GET : /api/" + apiVer + "/patient/all");
     return patientService.getAll();
   }
 
@@ -54,9 +60,9 @@ public class PatientController {
 
     @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
     @RequestParam("dob") String birthdate) {
-    LOGGER.info("GET : /api/${api.ver}/patient/patient?family="
+    LOGGER.info("GET : /api/" + apiVer + "/patient/patient?family="
       + lastname + "&given=" + firstname + "&dob=" + birthdate);
-      Optional<PatientDTO> optionalPatientDTO =
+    Optional<PatientDTO> optionalPatientDTO =
       patientService.findPatientDTOByLastnameAndFirstnameAndBirthdate(
         lastname,
         firstname,
@@ -90,6 +96,7 @@ public class PatientController {
     @RequestParam("phone")
     @Pattern(message = "must be a properly written US phone number, i.e : 123-456-7890",
       regexp = "^(?:(\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4}))|)$") String phone) {
+    LOGGER.info("POST : /api/" + apiVer + "/patient/add");
     try {
       PatientDTO patientDTOAdded =
         patientService.insert(lastname, firstname, birthdate, gender, addressNumberAndStreet, phone);
@@ -123,6 +130,7 @@ public class PatientController {
     @RequestParam("phone")
     @Pattern(message = "must be a properly written US phone number, i.e : 123-456-7890",
       regexp = "^(?:(\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4}))|)$") String phone) {
+    LOGGER.info("PUT : /api/" + apiVer + "/patient/update/validate");
     try {
       LOGGER.info("Trying to update patient.");
       return ResponseEntity.ok(
@@ -145,13 +153,32 @@ public class PatientController {
     @RequestParam("given") String firstname,
 
     @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
-    @RequestParam("dob") String birthdate
-  ) {
+    @RequestParam("dob") String birthdate) {
+    LOGGER.info("DELETE : /api/" + apiVer + "/patient/delete");
     if (patientService.delete(lastname, firstname, birthdate)) {
       return ResponseEntity.ok("Deletion successful !");
     } else {
       LOGGER.warn("Displaying 404 not found...");
       return patientNotFound();
     }
+  }
+
+  @GetMapping("/getId")
+  ResponseEntity<Object> getId(@NotBlank(message = "Family is mandatory !")
+                               @RequestParam("family") String lastname,
+                               @NotBlank(message = "Given is mandatory !")
+                               @RequestParam("given") String firstname,
+                               @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
+                               @RequestParam("dob") String birthdate) {
+    LOGGER.info("GET : /findId" +
+      "?family=" + lastname +
+      "&given=" + firstname +
+      "&dob" + birthdate);
+    Integer patId = patientService.getId(lastname, firstname, birthdate);
+    if (Objects.isNull(patId)) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No such patient found");
+    }
+    LOGGER.info("Displaying patient's id...");
+    return ResponseEntity.ok(patId);
   }
 }
