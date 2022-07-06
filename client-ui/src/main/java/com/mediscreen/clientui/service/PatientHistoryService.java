@@ -1,6 +1,7 @@
 package com.mediscreen.clientui.service;
 
 
+import com.mediscreen.clientui.model.beans.Patient;
 import com.mediscreen.clientui.model.beans.PatientHistory;
 import com.mediscreen.clientui.model.utils.layout.Paged;
 import com.mediscreen.clientui.proxy.MicroservicePatientsHistoryGatewayProxy;
@@ -22,20 +23,29 @@ public class PatientHistoryService {
 
   public Paged<PatientHistory> findByPatIdPage(String patId, Integer pageNum, Integer pageSize) {
     LOGGER.info("Retrieving patient notes' page : " +
-      "\npatId=" + patId + ", pageNum=" + pageNum + ", pageSize=" + pageSize + ".");
+      "patId=" + patId + ", pageNum=" + pageNum + ", pageSize=" + pageSize + ".");
 
     Paged<PatientHistory> patientHistoryPage = patientsHistoryProxy
       .findByPatIdPaged(patId, pageNum, pageSize);
 
 
-
     LOGGER.info("Notes' page received !");
 
-    if(patientHistoryPage.getPage().isEmpty()){
+    if (patientHistoryPage.getPage().isEmpty()) {
       LOGGER.warn("But it does not contain any note.");
     }
 
     return patientHistoryPage;
   }
 
+  public PatientHistory insert(PatientHistory patientHistory) {
+    try {
+      LOGGER.info("Saving " + patientHistory);
+      return patientsHistoryProxy.add(patientHistory);
+    } catch (Exception e) {
+      LOGGER.info("An error occurred during process. No notes were saved");
+      e.printStackTrace();
+      throw e;
+    }
+  }
 }

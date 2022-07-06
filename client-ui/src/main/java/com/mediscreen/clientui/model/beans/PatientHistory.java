@@ -14,7 +14,6 @@ public class PatientHistory {
   private String id;
 
   //That is the patient id
-  @NotBlank(message = "The patient's id must not be blank")
   private String patId;
 
   @NotBlank(message = "The patient's notes must not be blank")

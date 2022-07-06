@@ -22,17 +22,6 @@
         line-height:2em;
     }
 
-
-
-
-
-
-
-
-
-
-
-
   </style>
 
 </head>
@@ -71,42 +60,44 @@
   <div class="card-body">
     <h5 class="card-title text-capitalize" th:text="#{found.cardTitle}">patient's folder</h5>
     <h6 class="card-subtitle mb-2 text-muted">
-        <span class="text-capitalize" th:text="${patientDTOFound.given}">
+        <span class="text-capitalize" th:text="${patientDTO.given}">
           firstname
         </span>
-      <span class="text-capitalize" th:text="${patientDTOFound.family}">
+      <span class="text-capitalize" th:text="${patientDTO.family}">
           lastname
         </span>
     </h6>
     <ul class="list-group list-group-flush">
       <li class="list-group-item"><span class="text-capitalize" th:text="#{word.birthdate}">birthdate</span> :
-        <span th:text="${patientDTOFound.dob}">
+        <span th:text="${patientDTO.dob}">
         </span>
       </li>
       <li class="list-group-item">
         <span class="text-capitalize" th:text="#{word.sex}">
           sex
-        </span> : <span th:text="${patientDTOFound.gender.name}"></span>
+        </span> : <span th:text="${patientDTO.gender.name}"></span>
       </li>
       <li class="list-group-item">
         <span class="text-capitalize" th:text="#{word.address}">
           address
-        </span> : <span th:text="${patientDTOFound.address}"></span>
+        </span> : <span th:text="${patientDTO.address}"></span>
       </li>
       <li class="list-group-item">
         <span class="text-capitalize" th:text="#{word.phone}">
           phone
-        </span> : <span th:text="${patientDTOFound.phone}"></span>
+        </span> : <span th:text="${patientDTO.phone}"></span>
       </li>
     </ul>
-    <form action="#" method="post" th:action="@{/patient/update}">
+
+    <!-- Update form -->
+    <form action="#" method="post" th:action="@{/patient/update}" th:object="${patientDTO}">
       <div hidden>
-        <input name="family" th:value="${patientDTOFound.family}">
-        <input name="given" th:value="${patientDTOFound.given}">
-        <input name="dob" th:value="${patientDTOFound.dob}">
-        <input name="gender" th:value="${patientDTOFound.gender.name}">
-        <input name="address" th:value="${patientDTOFound.address}">
-        <input name="phone" th:value="${patientDTOFound.phone}">
+        <input th:field="*{family}" th:value="${patientDTO.family}">
+        <input th:field="*{given}" th:value="${patientDTO.given}">
+        <input th:field="*{dob}" th:value="${patientDTO.dob}">
+        <input th:field="*{gender}" th:value="${patientDTO.gender.name}">
+        <input th:field="*{address}" th:value="${patientDTO.address}">
+        <input th:field="*{phone}" th:value="${patientDTO.phone}">
       </div>
       <div class="mt-3">
         <button type="submit" class="btn btn-primary">
@@ -119,12 +110,14 @@
       </div>
     </form>
   </div>
+  <!-- hidden form for notes -->
   <div class="card-body">
-    <form action="#" method="get" th:action="@{/patient/notes}">
+    <form action="#" method="get" th:action="@{/patient/notes}" th:object="${patientDTO}">
       <div hidden>
-        <input name="family" th:value="${patientDTOFound.family}">
-        <input name="given" th:value="${patientDTOFound.given}">
-        <input name="dob" th:value="${patientDTOFound.dob}">
+        <input th:field="*{family}" th:value="${patientDTO.family}">
+        <input th:field="*{given}" th:value="${patientDTO.given}">
+        <input th:field="*{dob}" th:value="${patientDTO.dob}">
+        <input th:field="*{gender}" th:value="${patientDTO.gender}">
       </div>
 
       <button type="submit" class="btn btn-secondary text-capitalize">

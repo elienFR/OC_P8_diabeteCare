@@ -6,8 +6,11 @@ import com.mediscreen.clientui.model.beans.PatientDTO;
 import com.mediscreen.clientui.model.beans.PatientDTOForSearch;
 import com.mediscreen.clientui.model.beans.PatientHistory;
 import com.mediscreen.clientui.model.utils.layout.Paged;
+import com.mediscreen.clientui.model.utils.layout.Paging;
+import com.mediscreen.clientui.model.utils.layout.RestResponsePage;
 import com.mediscreen.clientui.service.PatientHistoryService;
 import com.mediscreen.clientui.service.PatientService;
+import feign.codec.DecodeException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +21,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.UnknownContentTypeException;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/patient")
@@ -33,35 +38,6 @@ public class PatientController {
   private PatientService patientService;
   @Autowired
   private PatientHistoryService patientHistoryService;
-
-  @GetMapping("/search")
-  public String find(PatientDTOForSearch patientDTOForSearch) {
-    LOGGER.info("GET : /patient/search");
-    return "patient/search";
-  }
-
-  @GetMapping("/search/validate")
-  public String findValidation(@Valid PatientDTOForSearch patientDTOForSearch,
-                               BindingResult result,
-                               Model model) {
-    LOGGER.info("POST : /patient/search/validate");
-    LOGGER.info("Validating entries...");
-    if (!result.hasErrors()) {
-      LOGGER.info("No error found in entry.");
-      try {
-        model.addAttribute("patientDTOFound", patientService.getPatient(patientDTOForSearch));
-        return "patient/found";
-      } catch (PatientNotFoundException e) {
-        model.addAttribute("patientDTOFound", new PatientDTO());
-        model.addAttribute("patientNotFound", true);
-        return "patient/found";
-      } catch (Exception e) {
-        return "../static/error/500";
-      }
-    }
-    LOGGER.info("Error found, searching aborted.");
-    return "patient/search";
-  }
 
   @GetMapping("/add")
   public String add(PatientDTO patientDTO) {
@@ -98,6 +74,37 @@ public class PatientController {
     return "/patient/add";
   }
 
+  @GetMapping("/search")
+  public String find(PatientDTOForSearch patientDTOForSearch) {
+    LOGGER.info("GET : /patient/search");
+    return "patient/search";
+  }
+
+  @GetMapping("/search/validate")
+  public String findValidation(@Valid PatientDTOForSearch patientDTOForSearch,
+                               BindingResult result,
+                               Model model) {
+    LOGGER.info("POST : /patient/search/validate");
+    LOGGER.info("Validating entries...");
+    if (!result.hasErrors()) {
+      LOGGER.info("No error found in entry.");
+      try {
+        model.addAttribute("patientDTO", patientService.getPatient(patientDTOForSearch));
+        return "patient/found";
+      } catch (PatientNotFoundException e) {
+        model.addAttribute("patientDTO", new PatientDTO());
+        model.addAttribute("patientNotFound", true);
+        return "patient/found";
+      } catch (Exception e) {
+        e.printStackTrace();
+        LOGGER.error("Une erreur est apparue...");
+        return "../static/error/500";
+      }
+    }
+    LOGGER.info("Error found, searching aborted.");
+    return "patient/search";
+  }
+
   @PostMapping("/update")
   public String updateFromSearch(PatientDTO patientDTO,
                                  Model model) {
@@ -115,6 +122,9 @@ public class PatientController {
                                  String initialGiven,
                                  String initialDob,
                                  Model model) {
+
+    // TODO : vérifier que cela fonctionne avec les nouveau paramètres de variable th:object dans le document found.html et update.html
+
     LOGGER.info("POST : /patient/update/validate");
     model.addAttribute("initialFamily", patientDTO.getFamily());
     model.addAttribute("initialGiven", patientDTO.getGiven());
@@ -144,44 +154,85 @@ public class PatientController {
   }
 
   @GetMapping("/notes")
-  public String findNotes(@NotBlank(message = "family is mandatory")
-                          @RequestParam(name = "family") String lastname,
-                          @NotBlank(message = "given is mandatory")
-                          @RequestParam(name = "given") String firstname,
-                          @NotBlank(message = "dob is mandatory")
-                          @RequestParam(name = "dob") String birthdate,
+  public String findNotes(String family,
+                          String given,
+                          String dob,
+                          PatientDTO patientDTO,
+                          @RequestParam(required = false, defaultValue = "5") Integer pageSize,
+                          @Min(value = 1)
+                          @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                          PatientHistory notes,
+                          Paged<PatientHistory> pagedNotes,
+                          Model model) {
+    LOGGER.info("GET : /patient/notes");
+    try {
+      // This code is used even if it looks redundant. It is used when you scroll from bars,
+      // patient gender was not passed during this process so we reset patient in the code
+      // so it works properly.
+      if (Objects.isNull(patientDTO.getGender()) || Objects.isNull(patientDTO.getFamily()) || Objects.isNull(patientDTO.getDob()) || Objects.isNull(patientDTO.getGiven())) {
+        patientDTO = patientService.getPatient(family, given, dob);
+        model.addAttribute("patientDTO", patientDTO);
+      }
+
+      String patId = patientService.getId(patientDTO);
+      model.addAttribute("patId", patId);
+      model.addAttribute("notes", notes);
+
+      pagedNotes = patientHistoryService.findByPatIdPage(patId, pageNum, pageSize);
+      model.addAttribute("pagedNotes", pagedNotes);
+
+      return "patient/notes";
+    } catch (PatientNotFoundException pnfe) {
+      //Handle when a patien has not been found
+      LOGGER.warn("patient has not been found.");
+      model.addAttribute("patientDTO", new PatientDTO());
+      model.addAttribute("patientNotFound", true);
+      return "patient/found";
+    } catch (DecodeException e) {
+      // This code part is here to handle the problem about feign exception when feign does not
+      // handle JSON deserialization properly for null response from microservicepatient while
+      // trying to get a patient history paged.
+      LOGGER.warn("No notes were found");
+      pagedNotes = new Paged<>();
+      pagedNotes.setPage(new RestResponsePage<>());
+      pagedNotes.setPaging(new Paging());
+      model.addAttribute("pagedNotes", pagedNotes);
+      return "patient/notes";
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw e;
+    }
+  }
+
+  @PostMapping("/notes/validate")
+  public String postNotes(@Valid PatientHistory notes,
+                          BindingResult results,
+                          PatientDTO patientDTO,
+                          String patId,
                           @Min(value = 1)
                           @RequestParam(required = false, defaultValue = "5") Integer pageSize,
                           @Min(value = 1)
                           @RequestParam(required = false, defaultValue = "1") Integer pageNum,
                           Model model) {
-    LOGGER.info("GET : /patient/notes" +
-      "?family=" + lastname +
-      "&given=" + firstname +
-      "&birthdate=" + birthdate +
-      "&pageSize=" + pageSize +
-      "&pageNum=" + pageNum);
+    LOGGER.info("POST : /notes/validate...");
+    model.addAttribute("patId", patId);
 
-    try {
-      PatientDTO patientDTO = patientService.getPatient(lastname, firstname, birthdate);
-      String patId = patientService.getId(patientDTO);
+    if (!results.hasErrors()) {
+      LOGGER.info("No error found. Saving notes about patient : " + patientDTO +
+        ", and notes : " + notes + "...");
+      PatientHistory savedNotes = patientHistoryService.insert(notes);
+      LOGGER.info("Saving successful of note : " + savedNotes);
 
-      Paged<PatientHistory> pagedNotes = patientHistoryService
-        .findByPatIdPage(patId, pageNum, pageSize);
-
+      Paged<PatientHistory> pagedNotes = patientHistoryService.findByPatIdPage(patId, pageNum, pageSize);
+      model.addAttribute("notes", new PatientHistory());
       model.addAttribute("pagedNotes", pagedNotes);
-      model.addAttribute("patientDTO", patientDTO);
       return "patient/notes";
-
-    } catch (PatientNotFoundException pnfe) {
-      LOGGER.warn("patient has not been found.");
-      model.addAttribute("patientDTOFound", new PatientDTO());
-      model.addAttribute("patientNotFound", true);
-      return "patient/found";
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw e;
     }
+    Paged<PatientHistory> pagedNotes = patientHistoryService.findByPatIdPage(patId, pageNum, pageSize);
+    model.addAttribute("pagedNotes", pagedNotes);
+    model.addAttribute("notes", notes);
+    LOGGER.error("Errors found. No notes were saved.");
+    return "patient/notes";
   }
 
 }

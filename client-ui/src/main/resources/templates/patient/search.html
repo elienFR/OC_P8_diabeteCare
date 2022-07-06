@@ -78,12 +78,12 @@
             <div class="input-group">
                             <span class="input-group-text" id="labelFirstname"
                                   th:text="#{search.firstname}">Firstname</span>
-              <input id="inputFirstname" class="form-control" type="text" th:field="*{given}" name="firstName"
+              <input id="inputFirstname" class="form-control" type="text" th:field="*{given}"
                      aria-label="firstname" aria-describedby="labelFirstname" placeholder="Firstname"
                      th:placeholder="#{search.firstnamePlaceholder}" required>
               <span class="input-group-text" id="labelLastname"
                     th:text="#{search.lastname}">Lastname</span>
-              <input id="inputLastname" class="form-control" type="text" th:field="*{family}" name="lastName"
+              <input id="inputLastname" class="form-control" type="text" th:field="*{family}"
                      aria-label="lastname" aria-describedby="labelLastname" placeholder="Lastname"
                      th:placeholder="#{search.lastnamePlaceholder}" required>
             </div>
@@ -92,7 +92,7 @@
             <div class="input-group py-2">
                 <span class="input-group-text" id="labelBirthdate"
                       th:text="#{search.birthdate}">Birthdate</span>
-              <input id="inputBirthdate" class="form-control" type="date" th:field="*{dob}" name="birthdate"
+              <input id="inputBirthdate" class="form-control" type="date" th:field="*{dob}"
                      aria-label="birthdate" aria-describedby="labelBirthdate"><!--required-->
             </div>
             <p class="text-danger" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></p>

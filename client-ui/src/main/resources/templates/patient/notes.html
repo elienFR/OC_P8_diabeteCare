@@ -23,11 +23,18 @@
         }
 
 
+
+
+
+
+
+
+
   </style>
 
 </head>
 <body>
-<div class="container-fluid">
+<div class="container">
 
   <div th:insert="menu :: menu"></div>
 
@@ -38,42 +45,69 @@
       <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none text-capitalize"
                                                          href="/patient/search"
                                                          th:text="#{word.search}">search</a></li>
-      <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none text-capitalize"
-                                                         href="#"
-                                                         th:text="#{word.patient}">patient</a></li>
+      <!-- This is just a form to make sure you go back to the proper patient via the breadcrumb -->
+      <form class="breadcrumb-item" action="#" method="get" th:action="@{/patient/search/validate}"
+            th:object="${patientDTO}">
+        <input th:field="*{family}" th:value="patientDTO.family" hidden>
+        <input th:field="*{given}" th:value="patientDTO.given" hidden>
+        <input th:field="*{dob}" th:value="patientDTO.dob" hidden>
+        <button type="submit" class="btn btn-link text-decoration-none text-capitalize p-0 m-0"
+                th:text="#{word.patient}">
+          patient
+        </button>
+      </form>
+
       <li class="breadcrumb-item active text-capitalize" aria-current="page" th:text="#{word.notes}">notes</li>
     </ol>
   </nav>
 
+  <!-- Major Row for body -->
+  <div class="row my-3">
 
-  <div class="row">
+    <!-- Left Card and addings -->
+    <div class="col-12 col-lg-3 mb-3 mb-lg-0">
 
-    <!-- Left side of page -->
-    <div class="col-0 col-md-1 col-lg-2">
-
-    </div>
-
-    <!-- middle part of body -->
-    <div class="col-12 col-md-10 col-lg-8 ">
-
-      <!-- Title and add Connection button -->
-      <div class="row">
-        <div class="col-12 col-md-4">
-          <h5 class="text-capitalize" th:text="#{patient.notes.title}">patient's notes</h5>
+      <!-- Patient card -->
+      <div class="row mb-2">
+        <div class="col bg-light rounded py-2">
+          <div th:insert="card :: notePatientCard"></div>
         </div>
       </div>
 
-      <!-- Patient card -->
-      <div class="row bg-light rounded py-2">
-        <div th:insert="card :: notePatientCard"></div>
+      <!-- Add notes form -->
+      <div class="row">
+        <div class="col">
+          <form action="#" method="post" th:action="@{/patient/notes/validate}" th:object="${notes}">
+            <input name="patId" th:value="${patId}" hidden>
+            <input name="family" th:value="${patientDTO.family}" hidden>
+            <input name="given" th:value="${patientDTO.given}" hidden>
+            <input name="dob" th:value="${patientDTO.dob}" hidden>
+            <input name="gender" th:value="${patientDTO.gender.name}" hidden>
+            <label id="notesTitle" class="form-label" th:text="#{patient.notes.add.title}">
+              add a note
+            </label>
+            <textarea class="form-control" aria-label="add notes area" aria-describedby="notesTitle"
+                      th:field="*{notes}" th:placeholder="#{patient.notes.add.placeholder}" required></textarea>
+            <p class="text-danger" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></p>
+            <div class="mt-2">
+              <button type="submit" class="btn btn-success text-capitalize" th:text="#{word.add}">
+                add
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
 
+    </div>
 
-      <!-- Transaction history table module -->
-      <div class="row mt-3">
+    <!-- History column -->
+    <div class="col-12 col-lg-9">
+      <h4 th:text="#{patient.notes.title}">patient's notes</h4>
+      <!-- Notes history table module -->
+      <div class="row">
 
-        <div class="table-responsive d-flex flex-column align-items-center p-0">
-
+        <!-- Table -->
+        <div class="table-responsive">
           <table id="notesPage" class="table table-striped">
             <thead>
             <tr class="bg-success text-light">
@@ -83,27 +117,32 @@
             </thead>
             <tbody>
             <tr th:if="${pagedNotes.page.empty}">
-              <td colspan="3" th:text="#{patient.notes.noNotes}">No notes for this patient</td>
+              <td colspan="2" th:text="#{patient.notes.noNotes}">No notes for this patient</td>
             </tr>
             <tr th:each="notePage : ${pagedNotes.page}">
-              <td>
-                <span th:text="${notePage.localDateTime}">
+              <td class="col-2">
+                <span th:text="${#temporals.format(notePage.localDateTime, 'yyyy-MM-dd')}">
                     localdatetime
                 </span>
               </td>
-              <td>
-                <span th:text="${notePage.notes}">
+              <td class="col-10">
+                <span class="text-wrap" th:text="${notePage.notes}">
                     notes
                 </span>
               </td>
             </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex flex-column align-items-center p-0">
 
           <nav aria-label="Page navigation" class="paging">
             <ul class="pagination" th:if="${pagedNotes.page.totalPages > 1}">
               <li class="page-item" th:classappend="${!pagedNotes.paging.isPrevEnabled()? 'disabled' : ''}">
-                <a class="page-link" th:href="@{'/patient/notes?family=' + ${patientDTO.family} + '&given=' + ${patientDTO.given} + '&dob=' + ${patientDTO.dob} + '&pageNum=' + ${pagedNotes.paging.pageNumber - 1}}"
+                <a class="page-link"
+                   th:href="@{'/patient/notes?family=' + ${patientDTO.family} + '&given=' + ${patientDTO.given} + '&dob=' + ${patientDTO.dob} + '&pageNum=' + ${pagedNotes.paging.pageNumber - 1}}"
                    tabindex="-1" aria-label="Next">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -112,7 +151,8 @@
               <th:block th:each="item : ${pagedNotes.paging.getItems()}">
                 <li class="page-item" th:classappend="${item.index == pagedNotes.paging.pageNumber? 'active' : ''}"
                     th:if="${item.pageItemType.name() == 'PAGE'}">
-                  <a class="page-link" th:href="@{'/patient/notes?family=' + ${patientDTO.family} + '&given=' + ${patientDTO.given} + '&dob=' + ${patientDTO.dob} + '&pageNum=' + ${item.index}}"
+                  <a class="page-link"
+                     th:href="@{'/patient/notes?family=' + ${patientDTO.family} + '&given=' + ${patientDTO.given} + '&dob=' + ${patientDTO.dob} + '&pageNum=' + ${item.index}}"
                      th:text="${item.index}"></a>
                 </li>
                 <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
@@ -121,7 +161,8 @@
               </th:block>
 
               <li class="page-item" th:classappend="${!pagedNotes.paging.isNextEnabled()? 'disabled' : ''}">
-                <a class="page-link" th:href="@{/patient/notes?family=' + ${patientDTO.family} + '&given=' + ${patientDTO.given} + '&dob=' + ${patientDTO.dob} + '&pageNum=' + ${pagedNotes.paging.pageNumber + 1}}"
+                <a class="page-link"
+                   th:href="@{/patient/notes?family=' + ${patientDTO.family} + '&given=' + ${patientDTO.given} + '&dob=' + ${patientDTO.dob} + '&pageNum=' + ${pagedNotes.paging.pageNumber + 1}}"
                    aria-label="Next">
                   <span aria-hiden="true">&raquo;</span>
                 </a>
@@ -133,17 +174,13 @@
         </div>
 
       </div>
-
-    </div>
-
-    <!-- Right side of page -->
-    <div class="col-0 col-md-1 col-lg-2">
-
     </div>
 
   </div>
 
-  <div th:insert="footer :: footer"></div>
+</div>
+
+<div th:insert="footer :: footer"></div>
 
 </div>
 
