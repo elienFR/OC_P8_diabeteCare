@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: 'microservice-report'
+  cloud:
+    config:
+      uri: 'http://localhost:9101'
