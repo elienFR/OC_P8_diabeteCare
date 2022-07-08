@@ -4,7 +4,6 @@ import com.mediscreen.microservicepatients.exceptions.AlreadyExistsException;
 import com.mediscreen.microservicepatients.exceptions.PatientNotFoundException;
 import com.mediscreen.microservicepatients.model.DTO.PatientDTO;
 import com.mediscreen.microservicepatients.model.Gender;
-import com.mediscreen.microservicepatients.model.Patient;
 import com.mediscreen.microservicepatients.service.PatientService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -48,6 +47,18 @@ public class PatientController {
    */
   private ResponseEntity<Object> patientNotFound() {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The patient has not been found.");
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Object> findById(@PathVariable("id") Integer patId) {
+    if (patId != null) {
+      try {
+        return ResponseEntity.ok(patientService.findById(patId));
+      } catch (PatientNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+      }
+    }
+    return ResponseEntity.badRequest().body("Wrong parameters !");
   }
 
   @GetMapping("/patient")

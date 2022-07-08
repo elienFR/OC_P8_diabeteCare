@@ -250,4 +250,15 @@ public class PatientService {
     LOGGER.warn("No patient found. Id provided will be null.");
     return null;
   }
+
+  public Patient findById(Integer patId) {
+    LOGGER.info("Contacting DB to look for patient...");
+    Optional<Patient> optionalPatient = patientRepository.findById(patId);
+    if (optionalPatient.isPresent()) {
+      LOGGER.info("Patient found !");
+      return optionalPatient.get();
+    }
+    LOGGER.warn("Patient not found.");
+    throw new PatientNotFoundException("Patient not found");
+  }
 }

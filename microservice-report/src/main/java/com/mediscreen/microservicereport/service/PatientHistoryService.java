@@ -1,5 +1,6 @@
 package com.mediscreen.microservicereport.service;
 
+import com.mediscreen.microservicereport.model.Patient;
 import com.mediscreen.microservicereport.model.PatientHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ public class PatientHistoryService {
   private PatientService patientService;
 
   public List<PatientHistory> getRecord(String patId) {
+    Patient patient = patientService.getPatient(patId);
+
     return null;
   }
 
