@@ -5,9 +5,10 @@ public enum DiabetesAssessment {
   NONE("None"),
   BORDERLINE("Borderline"),
   IN_DANGER("In danger"),
-  EARLY_ON_SET("Early on set");
+  EARLY_ON_SET("Early on set"),
+  ERROR("Error in creating assessment");
 
-  String name;
+  final String name;
 
   DiabetesAssessment(String name) {
     this.name=name;
@@ -15,6 +16,7 @@ public enum DiabetesAssessment {
 
   @Override
   public String toString() {
-    return name;
+    return "Assessment : "
+      + name;
   }
 }

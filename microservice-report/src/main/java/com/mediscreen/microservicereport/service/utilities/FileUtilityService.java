@@ -17,7 +17,7 @@ public class FileUtilityService {
    * @param filePath is the path of the file relative to project folder.
    * @return a list of each string contained in file.
    */
-  public static List<String> convertLinesInList(String filePath) {
+  public static List<String> convertLinesInList(String filePath) throws IOException {
     try {
       FileReader fileReader = new FileReader(filePath);
       List<String> linesAsList = new ArrayList<>();
@@ -32,8 +32,8 @@ public class FileUtilityService {
       return linesAsList;
     } catch (IOException e){
       e.printStackTrace();
+      throw e;
     }
-    return null;
   }
 
 }

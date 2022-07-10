@@ -1,11 +1,25 @@
-Hémoglobine
+Hémoglobine A1C
+haemoglobin a1c
+Hemoglobin A1C
 Microalbumine
+microalbumin
 Taille
+waiste
+size
+height
 Poids
+weight
 Fumeur
+smoker
 Anormal
+abnormal
 Cholestérol
 Vertige
+dizziness
 Rechute
+relapse
 Réaction
+reaction
 Anticorps
+antibody
+antibodies

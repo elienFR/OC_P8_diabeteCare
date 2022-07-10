@@ -8,6 +8,8 @@ public class DiabetesReport {
   Patient patient;
   DiabetesAssessment diabetesAssessment;
 
+  public DiabetesReport() {
+  }
 
   public Patient getPatient() {
     return patient;
@@ -23,5 +25,13 @@ public class DiabetesReport {
 
   public void setDiabetesAssessment(DiabetesAssessment diabetesAssessment) {
     this.diabetesAssessment = diabetesAssessment;
+  }
+
+  @Override
+  public String toString() {
+    return "DiabetesReport{" +
+      "patient=" + patient.toStringSmall() +
+      ", diabetesAssessment=" + diabetesAssessment +
+      '}';
   }
 }

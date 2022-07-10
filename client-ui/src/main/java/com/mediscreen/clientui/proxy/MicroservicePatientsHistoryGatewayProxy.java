@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @FeignClient(name = "microservice-patienthistory", url = "localhost:8090/patHistory")
 public interface MicroservicePatientsHistoryGatewayProxy {
 
   @GetMapping("/find")
-  PatientHistory find(@RequestParam String patId);
+  List<PatientHistory> find(@RequestParam String patId);
 
   @PostMapping("/add")
   PatientHistory add(@Valid @RequestBody PatientHistory patientHistory);

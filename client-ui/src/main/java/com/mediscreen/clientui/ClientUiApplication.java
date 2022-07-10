@@ -9,7 +9,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients("com.mediscreen.clientui")
-@EnableDiscoveryClient
 public class ClientUiApplication {
   @Autowired
   private PatientService patientService;

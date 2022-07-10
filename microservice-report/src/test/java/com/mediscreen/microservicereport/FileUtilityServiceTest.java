@@ -6,9 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class FileUtilityServiceTest {
@@ -16,7 +19,7 @@ public class FileUtilityServiceTest {
   @Autowired
   private FileUtilityService fileUtilityService;
 
-  String givenFile = new String();
+  String givenFile;
 
   @BeforeEach
   public void init(){
@@ -26,11 +29,21 @@ public class FileUtilityServiceTest {
 
   @Test
   public void convertLinesInListTest() {
-
-    List<String> results = fileUtilityService.convertLinesInList(givenFile);
-
+    List<String> results = new ArrayList<>();
+    try {
+      results = FileUtilityService.convertLinesInList(givenFile);
+    } catch(IOException e){
+      e.printStackTrace();
+    }
     assertThat(results.contains("Line1")).isTrue();
-    assertThat(results.contains("this is line 2"));
+    assertThat(results.contains("this is line 2")).isTrue();
+  }
+
+  @Test
+  public void convertLinesInListTestException() {
+
+    assertThrows(IOException.class, () -> FileUtilityService.convertLinesInList("somepath"));
+
   }
 
 
