@@ -154,4 +154,22 @@ public class ReportService {
     }
   }
 
+  /**
+   * This method creates the way diabetes reports are to be displayed.
+   *
+   * @param patId is the patient id you want to create a report from.
+   * @return a string displaying patient's report.
+   */
+  public String displayReport(Integer patId) {
+    LOGGER.info("Creating report display for patID=" + patId + "...");
+    DiabetesReport diabetesReport = createReport(patId);
+
+    StringBuffer stringBuffer = new StringBuffer("Patient: ");
+    stringBuffer.append(diabetesReport.getPatient().getFirstname() + " ");
+    stringBuffer.append(diabetesReport.getPatient().getLastname() + " ");
+    stringBuffer.append("(age " + patientService.getAge(diabetesReport.getPatient()) + ") ");
+    stringBuffer.append("diabetes assessment is:" + diabetesReport.getDiabetesAssessment().name());
+
+    return stringBuffer.toString();
+  }
 }

@@ -18,6 +18,8 @@ public class FileUtilityService {
    * @return a list of each string contained in file.
    */
   public static List<String> convertLinesInList(String filePath) throws IOException {
+    // Used to know working directory
+    // System.out.println("working directory : " + System.getProperty("user.dir"));
     try {
       FileReader fileReader = new FileReader(filePath);
       List<String> linesAsList = new ArrayList<>();
@@ -35,5 +37,7 @@ public class FileUtilityService {
       throw e;
     }
   }
+
+
 
 }

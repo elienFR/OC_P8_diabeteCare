@@ -1,5 +1,7 @@
 package com.mediscreen.microservicereport.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
@@ -10,6 +12,7 @@ import java.sql.Date;
 public class Patient {
 
 
+  @JsonIgnore
   private Integer id;
 
   @NotBlank(message="firstname is mandatory !")
@@ -23,13 +26,14 @@ public class Patient {
 
   @NotNull(message="gender is mandatory !")
   private Gender gender;
-
+  @JsonIgnore
   private String address;
 
   // The pattern corresponds to US phone number with a number 'n' so it has to correspond to
   // 'nnn-nnn-nnnn' or the pattern has to correspond to an empty string.
   @Pattern(message = "must be a properly written US phone number, i.e : 123-456-7890",
     regexp = "^(?:(\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4}))|)$")
+  @JsonIgnore
   private String phoneNumber;
 
   public Patient(){

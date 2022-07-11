@@ -36,6 +36,7 @@ public class ReportServiceTest {
   List<PatientHistory> notes;
   @BeforeEach
   public void setup() {
+    notes = new ArrayList<>();
     givenPatId = 1;
     givenMalePatient = new Patient("lastname", "firstname", Date.valueOf(LocalDate.of(1991, 6, 20)), Gender.M, null, null);
     givenFemalePatient = new Patient("lastname", "firstname", Date.valueOf(LocalDate.of(1991, 6, 20)), Gender.F, null, null);
