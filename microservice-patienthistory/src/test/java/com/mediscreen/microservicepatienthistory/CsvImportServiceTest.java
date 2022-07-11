@@ -16,7 +16,9 @@ import java.util.List;
 public class CsvImportServiceTest {
 
   @Test
-  public void testCsvReader() throws Exception {
+  public void testCsvReader() {
+
+    //TODO : finish test and implementation of csv file of patient sample
 
     try{
       Path path = Paths.get(ClassLoader.getSystemResource("resources/Notes_du_praticien_P9.csv").toURI());
@@ -31,6 +33,18 @@ public class CsvImportServiceTest {
     }
   }
 
+  // TODO : To be erased
+  @Test
+  public void dumbTest() {
+    Path currentDir = Paths.get(".");
+    System.out.println(currentDir.toAbsolutePath());
+  }
+
+  // TODO : To be erased
+  @Test
+  public void anotherDumbTest() {
+    System.out.println("working directory : " + System.getProperty("user.dir"));
+  }
 
 }
 

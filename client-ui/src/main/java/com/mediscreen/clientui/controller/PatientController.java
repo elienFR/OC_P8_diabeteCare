@@ -9,6 +9,7 @@ import com.mediscreen.clientui.model.utils.layout.Paged;
 import com.mediscreen.clientui.model.utils.layout.Paging;
 import com.mediscreen.clientui.model.utils.layout.RestResponsePage;
 import com.mediscreen.clientui.service.PatientHistoryService;
+import com.mediscreen.clientui.service.PatientReportService;
 import com.mediscreen.clientui.service.PatientService;
 import feign.codec.DecodeException;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +39,8 @@ public class PatientController {
   private PatientService patientService;
   @Autowired
   private PatientHistoryService patientHistoryService;
+  @Autowired
+  private PatientReportService patientReportService;
 
   @GetMapping("/add")
   public String add(PatientDTO patientDTO) {
@@ -177,13 +180,17 @@ public class PatientController {
       String patId = patientService.getId(patientDTO);
       model.addAttribute("patId", patId);
       model.addAttribute("notes", notes);
+      model.addAttribute("diabetesAssessment", patientReportService
+        .getAssess(Integer.parseInt(patId))
+        .name()
+      );
 
       pagedNotes = patientHistoryService.findByPatIdPage(patId, pageNum, pageSize);
       model.addAttribute("pagedNotes", pagedNotes);
 
       return "patient/notes";
     } catch (PatientNotFoundException pnfe) {
-      //Handle when a patien has not been found
+      //Handle when a patient has not been found
       LOGGER.warn("patient has not been found.");
       model.addAttribute("patientDTO", new PatientDTO());
       model.addAttribute("patientNotFound", true);
@@ -226,11 +233,19 @@ public class PatientController {
       Paged<PatientHistory> pagedNotes = patientHistoryService.findByPatIdPage(patId, pageNum, pageSize);
       model.addAttribute("notes", new PatientHistory());
       model.addAttribute("pagedNotes", pagedNotes);
+      model.addAttribute("diabetesAssessment", patientReportService
+        .getAssess(Integer.parseInt(patId))
+        .name()
+      );
       return "patient/notes";
     }
     Paged<PatientHistory> pagedNotes = patientHistoryService.findByPatIdPage(patId, pageNum, pageSize);
     model.addAttribute("pagedNotes", pagedNotes);
     model.addAttribute("notes", notes);
+    model.addAttribute("diabetesAssessment", patientReportService
+      .getAssess(Integer.parseInt(patId))
+      .name()
+    );
     LOGGER.error("Errors found. No notes were saved.");
     return "patient/notes";
   }

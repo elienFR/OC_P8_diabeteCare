@@ -102,7 +102,7 @@
 
     <!-- History column -->
     <div class="col-12 col-lg-9">
-      <h4 th:text="#{patient.notes.title}">patient's notes</h4>
+      <h4 class="fw-bold" th:text="#{patient.notes.title}">Patient's notes</h4>
       <!-- Notes history table module -->
       <div class="row">
 
@@ -174,6 +174,22 @@
         </div>
 
       </div>
+
+      <!-- Patient's report -->
+      <div class="card">
+        <div class="card-header">
+          <h5><span class="fw-bold" th:text="#{patient.report.title}">Patient's report</span></b></h5>
+        </div>
+        <div class="card-body">
+            <span th:text="#{patient.report.text}">
+              Your patient's diabetes' assessment is
+            </span>
+          <span class="fw-bold fs-4" th:text="${diabetesAssessment}">
+              diabetes.assessment
+            </span>
+        </div>
+      </div>
+
     </div>
 
   </div>

@@ -114,16 +114,6 @@
                     male
                   </span>
                 </option>
-                <option class="text-capitalize" value="NG" th:text="#{word.nonGendered}">
-                  <span class="text-capitalize" th:text="#{word.nonGendered}">
-                    non gendered
-                  </span>
-                </option>
-                <option class="text-capitalize" value="NA" th:text="#{word.na}">
-                  <span class="text-capitalize" th:text="#{word.na}">
-                    NA
-                  </span>
-                </option>
               </select>
             </div>
             <p class="text-danger" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></p>

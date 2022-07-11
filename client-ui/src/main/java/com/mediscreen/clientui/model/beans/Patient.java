@@ -117,4 +117,13 @@ public class Patient {
       ", phoneNumber='" + phoneNumber + '\'' +
       '}';
   }
+
+  public String toStringSmall(){
+    return "Patient{" +
+      "id='" + id + '\'' +
+      ", firstname='" + firstname + '\'' +
+      ", lastname='" + lastname + '\'' +
+      ", birthdate=" + birthdate +
+      '}';
+  }
 }
