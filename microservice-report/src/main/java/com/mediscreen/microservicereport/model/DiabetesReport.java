@@ -3,8 +3,6 @@ package com.mediscreen.microservicereport.model;
 
 public class DiabetesReport {
 
-  // TODO : JSON FILTER to hide everything in patient except family and given
-
   Patient patient;
   DiabetesAssessment diabetesAssessment;
 

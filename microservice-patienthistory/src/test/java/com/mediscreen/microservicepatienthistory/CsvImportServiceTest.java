@@ -1,50 +1,29 @@
 package com.mediscreen.microservicepatienthistory;
 
-import com.opencsv.CSVReader;
+
+import com.mediscreen.microservicepatienthistory.utils.CsvImporterService;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 public class CsvImportServiceTest {
 
   @Test
-  public void testCsvReader() {
+  public void testCsvReader() throws Exception {
+    String givenFilepath = "resources/testFile.csv";
 
-    //TODO : finish test and implementation of csv file of patient sample
+    List<String[]> result = CsvImporterService.parseCSV(givenFilepath);
 
-    try{
-      Path path = Paths.get(ClassLoader.getSystemResource("resources/Notes_du_praticien_P9.csv").toURI());
-      Reader reader = Files.newBufferedReader(path);
-
-
-      CSVReader csvReader = new CSVReader(reader);
-      List<String[]> decodedCsv = csvReader.readAll();
-      System.out.println(decodedCsv);
-    } catch (Exception e){
-      e.printStackTrace();
-    }
+    assertThat(result.size()).isEqualTo(7);
+    result.forEach(
+      aoS -> assertThat(aoS.length == 2).isTrue());
   }
 
-  // TODO : To be erased
-  @Test
-  public void dumbTest() {
-    Path currentDir = Paths.get(".");
-    System.out.println(currentDir.toAbsolutePath());
-  }
-
-  // TODO : To be erased
-  @Test
-  public void anotherDumbTest() {
-    System.out.println("working directory : " + System.getProperty("user.dir"));
-  }
 
 }
 

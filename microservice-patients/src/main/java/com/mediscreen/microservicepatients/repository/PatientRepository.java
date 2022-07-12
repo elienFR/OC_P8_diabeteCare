@@ -12,4 +12,5 @@ public interface PatientRepository extends CrudRepository<Patient, Integer> {
 
   Optional<Patient> findByLastnameAndFirstnameAndBirthdate(String lastname, String firstname, Date birthdate);
 
+  Optional<Patient> findByLastname(String lastname);
 }

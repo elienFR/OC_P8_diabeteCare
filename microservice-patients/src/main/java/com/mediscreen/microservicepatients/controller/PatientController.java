@@ -192,4 +192,19 @@ public class PatientController {
     LOGGER.info("Displaying patient's id...");
     return ResponseEntity.ok(patId);
   }
+
+  /**
+   * This method is NOT TO BE USED. It is only here to import a csv file from patienthistory.
+   * Normally two or more patients can have the same lastname. As a consequence you cannot find one
+   * patient associated to one lastname.
+   * But the given csv file is constructed so that one lastname is associated with ONLY one patient.
+   * So we constructed this method to import such file ONLY. not for other purpose.
+   *
+   * @param lastname a given lastname
+   * @return the id associated to the lastname
+   */
+  @GetMapping("/id")
+  public Integer getIdFromFamily(@RequestParam("family") String lastname){
+    return patientService.getIdFromFamily(lastname);
+  }
 }

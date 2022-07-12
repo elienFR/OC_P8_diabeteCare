@@ -261,4 +261,12 @@ public class PatientService {
     LOGGER.warn("Patient not found.");
     throw new PatientNotFoundException("Patient not found");
   }
+
+  public Integer getIdFromFamily(String lastname) {
+    Optional<Patient> optionalPatient = patientRepository.findByLastname(lastname);
+    if(optionalPatient.isPresent()){
+      return optionalPatient.get().getId();
+    }
+    throw new PatientNotFoundException("Patient has not been found");
+  }
 }

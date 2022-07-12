@@ -126,8 +126,6 @@ public class PatientController {
                                  String initialDob,
                                  Model model) {
 
-    // TODO : vérifier que cela fonctionne avec les nouveau paramètres de variable th:object dans le document found.html et update.html
-
     LOGGER.info("POST : /patient/update/validate");
     model.addAttribute("initialFamily", patientDTO.getFamily());
     model.addAttribute("initialGiven", patientDTO.getGiven());
