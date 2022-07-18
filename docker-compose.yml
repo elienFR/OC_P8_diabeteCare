@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  microservice_patients:
+    build: ./microservice-patients
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - mysql_db
+    command: sh -c './wait-for mysql_db:3306 -- npm start'
+  mysql_db:
+    image: "mysql:8.0"
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: diabetecare
+      MYSQL_USER: diabetecareusr
+      MYSQL_PASSWORD: diabetecare123
+      MYSQL_ROOT_PASSWORD: MysqlDockerRootP4ssW0rd!

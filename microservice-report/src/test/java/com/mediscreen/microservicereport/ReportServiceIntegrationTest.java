@@ -3,12 +3,14 @@ package com.mediscreen.microservicereport;
 import com.mediscreen.microservicereport.model.DiabetesAssessment;
 import com.mediscreen.microservicereport.model.DiabetesReport;
 import com.mediscreen.microservicereport.service.ReportService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 @SpringBootTest
 public class ReportServiceIntegrationTest {
 

@@ -6,6 +6,7 @@ import com.mediscreen.microservicereport.service.PatientHistoryService;
 import com.mediscreen.microservicereport.service.PatientService;
 import com.mediscreen.microservicereport.service.ReportService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +19,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-
 
 @SpringBootTest
 public class ReportServiceTest {
@@ -36,6 +36,7 @@ public class ReportServiceTest {
   List<PatientHistory> notes;
   @BeforeEach
   public void setup() {
+    System.out.println("!!!!!!!!!!!! THIS IS SETUP BEFORE TEST !!!!!!!!!!!!");
     notes = new ArrayList<>();
     givenPatId = 1;
     givenMalePatient = new Patient("lastname", "firstname", Date.valueOf(LocalDate.of(1991, 6, 20)), Gender.M, null, null);
@@ -43,6 +44,7 @@ public class ReportServiceTest {
     when(patientHistoryServiceMocked.findNotes(givenPatId)).thenReturn(notes);
     when(patientServiceMocked.getPatient(givenPatId)).thenReturn(givenMalePatient);
     when(patientServiceMocked.getAge(givenMalePatient)).thenReturn(31);
+    System.out.println("!!!!!!!!!!!! END OF SETUP BEFORE TEST !!!!!!!!!!!!");
   }
 
   @Test
@@ -64,7 +66,7 @@ public class ReportServiceTest {
   @Test
   public void createReportTestAssessmentBorderline(){
     PatientHistory patientHistory1 = new PatientHistory();
-    patientHistory1.setNotes("some notes hémoglobine");
+    patientHistory1.setNotes("some notes hémoglobine a1c");
     PatientHistory patientHistory2 = new PatientHistory();
     patientHistory2.setNotes("some notes taille");
     PatientHistory patientHistory3 = new PatientHistory();
@@ -80,7 +82,7 @@ public class ReportServiceTest {
   @Test
   public void createReportTestAssessmentManInDangerMoreThan30yo(){
     PatientHistory patientHistory1 = new PatientHistory();
-    patientHistory1.setNotes("some notes hémoglobine");
+    patientHistory1.setNotes("some notes hémoglobine a1c");
     PatientHistory patientHistory2 = new PatientHistory();
     patientHistory2.setNotes("some notes taille");
     PatientHistory patientHistory3 = new PatientHistory();
@@ -98,7 +100,7 @@ public class ReportServiceTest {
     when(patientServiceMocked.getAge(givenMalePatient)).thenReturn(25);
 
     PatientHistory patientHistory1 = new PatientHistory();
-    patientHistory1.setNotes("some notes hémoglobine");
+    patientHistory1.setNotes("some notes hémoglobine a1c");
     PatientHistory patientHistory2 = new PatientHistory();
     patientHistory2.setNotes("some notes taille");
     PatientHistory patientHistory3 = new PatientHistory();
@@ -116,7 +118,7 @@ public class ReportServiceTest {
     when(patientServiceMocked.getAge(givenMalePatient)).thenReturn(25);
 
     PatientHistory patientHistory1 = new PatientHistory();
-    patientHistory1.setNotes("some notes hémoglobine");
+    patientHistory1.setNotes("some notes hémoglobine a1c");
     PatientHistory patientHistory2 = new PatientHistory();
     patientHistory2.setNotes("some notes taille");
     PatientHistory patientHistory3 = new PatientHistory();
@@ -137,7 +139,7 @@ public class ReportServiceTest {
   public void createReportTestAssessmentInDangerMoreThan30yo(){
 
     PatientHistory patientHistory1 = new PatientHistory();
-    patientHistory1.setNotes("some notes hémoglobine");
+    patientHistory1.setNotes("some notes hémoglobine a1c");
     PatientHistory patientHistory2 = new PatientHistory();
     patientHistory2.setNotes("some notes taille");
     PatientHistory patientHistory3 = new PatientHistory();
@@ -160,7 +162,7 @@ public class ReportServiceTest {
   public void createReportTestAssessmentEarlyOnSetMoreThan30yo(){
 
     PatientHistory patientHistory1 = new PatientHistory();
-    patientHistory1.setNotes("some notes hémoglobine");
+    patientHistory1.setNotes("some notes hémoglobine a1c");
     PatientHistory patientHistory2 = new PatientHistory();
     patientHistory2.setNotes("some notes taille");
     PatientHistory patientHistory3 = new PatientHistory();
