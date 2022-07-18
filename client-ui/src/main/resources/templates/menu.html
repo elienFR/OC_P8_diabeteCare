@@ -34,20 +34,23 @@
             <div class="collapse navbar-collapse justify-content-end navbar-light" id="navbarSupportedContent">
                 <ul class="nav navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link text-capitalize" href="/home" th:text="#{word.home}">Home</a>
+                        <a class="nav-link text-capitalize" href="/home" th:text="#{word.home}">home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-capitalize" href="/patient/" th:text="#{word.patients}">patients</a>
                     </li>
                     <li class="nav-item text-capitalize">
-                        <a class="nav-link" href="/patient/search" th:text="#{word.search}">Search</a>
+                        <a class="nav-link" href="/patient/search" th:text="#{word.search}">search</a>
                     </li>
                     <li class="nav-item text-capitalize">
-                        <a class="nav-link" href="/patient/add" th:text="#{word.add}">Add</a>
+                        <a class="nav-link" href="/patient/add" th:text="#{word.add}">add</a>
                     </li>
                     <li class="nav-item text-capitalize" th:if="false">
-                        <a class="nav-link" href="/patient/update" th:text="#{word.update}">Update</a>
+                        <a class="nav-link" href="/patient/update" th:text="#{word.update}">update</a>
                     </li>
                     <li class="nav-item" th:if="false">
                         <form th:action="@{/logout_perform}" method="post">
-                            <button class="nav-link btn btn-link" type="submit" value="Logout" th:text="#{menu.logOff}">Log off</button>
+                            <button class="nav-link btn btn-link text-capitalize" type="submit" value="Logout" th:text="#{menu.logOff}">log off</button>
                         </form>
                     </li>
                 </ul>

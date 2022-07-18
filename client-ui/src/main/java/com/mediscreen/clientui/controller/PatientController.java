@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.UnknownContentTypeException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
@@ -41,6 +42,19 @@ public class PatientController {
   private PatientHistoryService patientHistoryService;
   @Autowired
   private PatientReportService patientReportService;
+
+  @GetMapping("/")
+  public String all(PatientDTOForSearch patientDTOForSearch,
+                    @Max(value = 25)
+                    @Min(value = 1)
+                    @RequestParam(required = false, defaultValue = "5") Integer pageSize,
+                    @Min(value = 1)
+                    @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                    Model model) {
+    LOGGER.info("GET : /patient...");
+    model.addAttribute("patientsListPaged", patientService.getAllPatientPaged(pageNum, pageSize));
+    return "patient/all";
+  }
 
   @GetMapping("/add")
   public String add(PatientDTO patientDTO) {

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+  <title>Pay My Buddy - Notes</title>
+
+  <style>
+        .breadcrumb {
+            box-shadow: 0px 0px #d5d4d4;
+            /*background: #eeeded;*/
+            background: #f5f5f5;
+            border: 0px solid #eeeded;
+            border-radius: 0px;
+            padding: 0 5px 0 10px !important;
+            font-size: 16px;
+            line-height:2em;
+        }
+
+
+
+  </style>
+
+</head>
+<body>
+<div class="container">
+
+  <div th:insert="menu :: menu"></div>
+
+  <nav class="row" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item" aria-current="page"><a class="text-decoration-none text-capitalize" href="/home"
+                                                         th:text="#{word.home}">home</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><a class="text-decoration-none text-capitalize"
+                                                                href="/patient/"
+                                                                th:text="#{word.patients}">all patients</a></li>
+    </ol>
+  </nav>
+
+  <!-- Major Row for body -->
+  <div class="row my-3">
+
+
+    <!-- Patients page -->
+    <div class="col-12 col-lg-9">
+      <h4 class="fw-bold" th:text="#{patient.all.title}">all patients</h4>
+      <!-- patients' table module -->
+      <div class="row">
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <table id="patientsPage" class="table table-striped">
+            <thead>
+            <tr class="bg-success text-light">
+              <th scope="col"><span class="text-capitalize" th:text="#{word.lastname}">lastname</span></th>
+              <th scope="col"><span class="text-capitalize" th:text="#{word.firstname}">firstname</span></th>
+              <th scope="col"><span class="text-capitalize" th:text="#{word.birthdate}">date of birth</span></th>
+              <th scope="col"><span></span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${patientsListPaged.page.empty}">
+              <td colspan="4" th:text="#{patient.all.noPatients}">No patient found in db</td>
+            </tr>
+            <tr th:each="patient : ${patientsListPaged.page}">
+              <td>
+                <span th:text="${patient.lastname}">
+                    lastname
+                </span>
+              </td>
+              <td>
+                <span class="text-wrap" th:text="${patient.firstname}">
+                    firstname
+                </span>
+              </td>
+              <td>
+                <span class="text-wrap" th:text="${patient.birthdate}">
+                    birthdate
+                </span>
+              </td>
+              <td>
+                <!--                <a class="link-primary" th:href="@{/patient/update/{id}(id=${bidList.bidListId})}">view profile</a>-->
+                <form action="#" method="get" th:action="@{/patient/search/validate}" th:object="${patientDTOForSearch}"
+                      class="p-0 m-0">
+                  <input hidden th:attr="value = ${patient.lastname}" name="family">
+                  <input hidden th:attr="value = ${patient.firstname}" name="given">
+                  <input hidden th:attr="value = ${patient.birthdate}" name="dob">
+                  <button class="btn btn-success" type="submit" th:text="#{btn.viewProfile}">
+                    view profile
+                  </button>
+                </form>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex flex-column align-items-center p-0">
+
+          <nav aria-label="Page navigation" class="paging">
+            <ul class="pagination" th:if="${patientsListPaged.page.totalPages > 1}">
+              <li class="page-item" th:classappend="${!patientsListPaged.paging.isPrevEnabled()? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{'/patient/' + '?pageNum=' + ${patientsListPaged.paging.pageNumber - 1}}"
+                   tabindex="-1" aria-label="Next">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+
+              <th:block th:each="item : ${patientsListPaged.paging.getItems()}">
+                <li class="page-item"
+                    th:classappend="${item.index == patientsListPaged.paging.pageNumber? 'active' : ''}"
+                    th:if="${item.pageItemType.name() == 'PAGE'}">
+                  <a class="page-link"
+                     th:href="@{'/patient/' + '?pageNum=' + ${item.index}}"
+                     th:text="${item.index}"></a>
+                </li>
+                <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                  <a class="page-link" href="#">...</a>
+                </li>
+              </th:block>
+
+              <li class="page-item" th:classappend="${!patientsListPaged.paging.isNextEnabled()? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{/patient/' + '?pageNum=' + ${patientsListPaged.paging.pageNumber + 1}}"
+                   aria-label="Next">
+                  <span aria-hiden="true">&raquo;</span>
+                </a>
+              </li>
+
+            </ul>
+          </nav>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div th:insert="footer :: footer"></div>
+
+</div>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+<script src="../static/js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

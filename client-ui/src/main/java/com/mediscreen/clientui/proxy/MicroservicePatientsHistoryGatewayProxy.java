@@ -26,9 +26,4 @@ public interface MicroservicePatientsHistoryGatewayProxy {
                                          @RequestParam(required = false, defaultValue = "1") Integer pageNum,
                                          @RequestParam(required = false, defaultValue = "5") Integer pageSize);
 
-//  @GetMapping("/findPage")
-//  Page<PatientHistory> findByPatIdPaged(@RequestParam String patId,
-//                                        @RequestParam(required = false, defaultValue = "1") Integer pageNum,
-//                                        @RequestParam(required = false, defaultValue = "5") Integer pageSize);
-
 }

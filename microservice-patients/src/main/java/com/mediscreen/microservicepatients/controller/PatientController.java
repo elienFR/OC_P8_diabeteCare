@@ -4,6 +4,8 @@ import com.mediscreen.microservicepatients.exceptions.AlreadyExistsException;
 import com.mediscreen.microservicepatients.exceptions.PatientNotFoundException;
 import com.mediscreen.microservicepatients.model.DTO.PatientDTO;
 import com.mediscreen.microservicepatients.model.Gender;
+import com.mediscreen.microservicepatients.model.Patient;
+import com.mediscreen.microservicepatients.model.layout.Paged;
 import com.mediscreen.microservicepatients.service.PatientService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,9 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,6 +38,31 @@ public class PatientController {
   public List<PatientDTO> getAll() {
     LOGGER.info("GET : /api/" + apiVer + "/patient/all");
     return patientService.getAll();
+  }
+
+  /**
+   * This method return a response entity containing a paged object of all patients contained in DB.
+   *
+   * @param pageNum this is the page number of the requested page
+   * @param pageSize this is the size of the requested page.
+   * @return see description above.
+   */
+  @GetMapping("/allPaged")
+  public ResponseEntity<Object> getAllPAged(@Min(value = 1)
+                                       @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                                       @Min(value = 1)
+                                       @Max(value = 25)
+                                       @RequestParam(required = false, defaultValue = "5") Integer pageSize) {
+    LOGGER.info("GET : /api/" + apiVer + "/patient/allPaged"
+      + "?pageNum=" + pageNum
+      + "&pageSize=" + pageSize);
+    Paged<Patient> patientsPages = patientService
+      .findAllPaged(pageNum, pageSize);
+    if (patientsPages.getPage().isEmpty()) {
+      return ResponseEntity.ok("No notes found");
+    } else {
+      return ResponseEntity.ok(patientsPages);
+    }
   }
 
   /**
@@ -204,7 +229,7 @@ public class PatientController {
    * @return the id associated to the lastname
    */
   @GetMapping("/id")
-  public Integer getIdFromFamily(@RequestParam("family") String lastname){
+  public Integer getIdFromFamily(@RequestParam("family") String lastname) {
     return patientService.getIdFromFamily(lastname);
   }
 }

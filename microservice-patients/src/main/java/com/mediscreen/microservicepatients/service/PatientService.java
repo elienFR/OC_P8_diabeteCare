@@ -5,10 +5,16 @@ import com.mediscreen.microservicepatients.exceptions.PatientNotFoundException;
 import com.mediscreen.microservicepatients.model.DTO.PatientDTO;
 import com.mediscreen.microservicepatients.model.Gender;
 import com.mediscreen.microservicepatients.model.Patient;
+import com.mediscreen.microservicepatients.model.layout.Paged;
+import com.mediscreen.microservicepatients.model.layout.Paging;
+import com.mediscreen.microservicepatients.model.layout.RestResponsePage;
 import com.mediscreen.microservicepatients.repository.PatientRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -264,9 +270,30 @@ public class PatientService {
 
   public Integer getIdFromFamily(String lastname) {
     Optional<Patient> optionalPatient = patientRepository.findByLastname(lastname);
-    if(optionalPatient.isPresent()){
+    if (optionalPatient.isPresent()) {
       return optionalPatient.get().getId();
     }
     throw new PatientNotFoundException("Patient has not been found");
   }
+
+  public Paged<Patient> findAllPaged(Integer pageNum, Integer pageSize) {
+    LOGGER.info("Gathering all patients in paged format." + "Selected page " +
+      "is " + pageNum + " and num of elements per page is " + pageSize + ".");
+
+    PageRequest pageRequest = PageRequest.of(pageNum - 1, pageSize, Sort.by(Sort.Direction.ASC,"lastname"));
+
+    Page<Patient> patientPage = patientRepository.findAll(pageRequest);
+
+    RestResponsePage<Patient> restResponsePage =
+      new RestResponsePage<>(patientPage.getContent(), patientPage.getPageable(), patientPage.getTotalElements());
+
+    return new Paged<>(
+      restResponsePage,
+      Paging.of(patientPage.getTotalPages(),
+        pageNum, pageSize)
+    );
+
+  }
+
+
 }

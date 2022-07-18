@@ -1,16 +1,16 @@
 package com.mediscreen.clientui.proxy;
 
 import com.mediscreen.clientui.model.beans.Gender;
+import com.mediscreen.clientui.model.beans.Patient;
 import com.mediscreen.clientui.model.beans.PatientDTO;
+import com.mediscreen.clientui.model.utils.layout.Paged;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 @FeignClient(name = "microservice-patient", url = "localhost:8090/patient")
 public interface MicroservicePatientsGatewayProxy {
@@ -70,10 +70,16 @@ public interface MicroservicePatientsGatewayProxy {
 
   @GetMapping("/getId")
   Integer getId(@NotBlank(message = "Family is mandatory !")
-               @RequestParam("family") String lastname,
-               @NotBlank(message = "Given is mandatory !")
-               @RequestParam("given") String firstname,
-               @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
-               @RequestParam("dob") String birthdate);
+                @RequestParam("family") String lastname,
+                @NotBlank(message = "Given is mandatory !")
+                @RequestParam("given") String firstname,
+                @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
+                @RequestParam("dob") String birthdate);
 
+  @GetMapping("/allPaged")
+  Paged<Patient> findAllPaged(@Min(value = 1)
+                                 @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                              @Max(value = 25)
+                                 @Min(value = 1)
+                                 @RequestParam(required = false, defaultValue = "5") Integer pageSize);
 }

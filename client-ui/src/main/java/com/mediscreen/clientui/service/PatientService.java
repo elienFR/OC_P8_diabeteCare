@@ -3,8 +3,10 @@ package com.mediscreen.clientui.service;
 import com.mediscreen.clientui.controller.PatientController;
 import com.mediscreen.clientui.exceptions.AlreadyExistsException;
 import com.mediscreen.clientui.exceptions.PatientNotFoundException;
+import com.mediscreen.clientui.model.beans.Patient;
 import com.mediscreen.clientui.model.beans.PatientDTO;
 import com.mediscreen.clientui.model.beans.PatientDTOForSearch;
+import com.mediscreen.clientui.model.utils.layout.Paged;
 import com.mediscreen.clientui.proxy.MicroservicePatientsGatewayProxy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -108,4 +110,18 @@ public class PatientService {
     LOGGER.info("Patient id is : patID=" + patId);
     return patId;
   }
+
+  public Paged<Patient> getAllPatientPaged(Integer pageNum, Integer pageSize) {
+    LOGGER.info("Retrieving paged patients' list : " +
+      "pageNum=" + pageNum + ", pageSize=" + pageSize + ".");
+    Paged<Patient> patientsPage = microservicePatientsGatewayProxy
+      .findAllPaged(pageNum,pageSize);
+    LOGGER.info("Patients' page received !");
+    if (patientsPage.getPage().isEmpty()) {
+      LOGGER.warn("But it does not contain any patient.");
+    }
+    return patientsPage;
+  }
+
+
 }
