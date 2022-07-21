@@ -9,9 +9,9 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: 'http://eurekaserver:9102/eureka/'
-    registerWithEureka: 'true'
-    fetchRegistry: 'true'
+      defaultZone: 'http://localhost:9102/eureka/'
+    registerWithEureka: 'false'
+    fetchRegistry: 'false'
 
 #Personal configs
 #Api version
@@ -19,9 +19,9 @@ api:
   ver: 'v1'
 url:
   patient:
-    proxy: "apigateway:8090/patient"
+    proxy: "localhost:8090/patient"
   patientHistory:
-    proxy: "apigateway:8090/patHistory"
+    proxy: "localhost:8090/patHistory"
 
 management:
   endpoints:

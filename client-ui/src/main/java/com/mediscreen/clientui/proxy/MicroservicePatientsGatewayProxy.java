@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.*;
 
-@FeignClient(name = "microservice-patient", url = "localhost:8090/patient")
+@FeignClient(name = "microservice-patient", url = "${url.patient.proxy}")
 public interface MicroservicePatientsGatewayProxy {
 
   @GetMapping("/patient")

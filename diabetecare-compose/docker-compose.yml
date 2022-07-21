@@ -1,26 +1,62 @@
 version: "3.7"
+
 services:
+  #NO IMPL OF CONFIG SERVER FOR NOW
 #  configserver:
 #    build: ./config-server
 #    restart: always
 #    ports:
 #      - "9101:9101"
+
   eurekaserver:
+    container_name: "eurekaserver"
     build: ./eureka-server
     restart: always
     ports:
       - "9102:9102"
+#    depends_on:
+#      - configserver
+
+  apigateway:
+    container_name: "apigateway"
+    build: ./api-gateway
+    restart: always
+    ports:
+      - "8090:8090"
+    depends_on:
+#      - configserver
+      - eurekaserver
+      - microservicereport
+      - microservicepatientshistory
+      - microservicepatients
+    command:
+      - sh -c './wait-for eurekaserver:9102 -- npm start'
+      - sh -c './wait-for microservicepatients:8081 -- npm start'
+      - sh -c './wait-for microservicepatientshistory:8082 -- npm start'
+      - sh -c './wait-for microservicereport:8082 -- npm start'
+
   mysqldb:
     image: "mysql:8.0"
     restart: always
     ports:
-      - "3306:3306"
+      - "3307:3306"
     environment:
       MYSQL_DATABASE: diabetecare
       MYSQL_USER: diabetecareusr
       MYSQL_PASSWORD: diabetecare123
       MYSQL_ROOT_PASSWORD: MysqlDockerRootP4ssW0rd!
-  microservice_patients:
+
+  mongodb:
+    image: "mongo:5.0.9"
+    restart: always
+    ports:
+      - "27018:27017"
+    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: diabetecare
+
+  microservicepatients:
     container_name: mspatients
     build: ./microservice-patients
     restart: always
@@ -32,3 +68,50 @@ services:
       - eurekaserver
     command:
       - sh -c './wait-for mysql:3306 -- npm start'
+      - sh -c './wait-for eurekaserver:9102 -- npm start'
+
+  microservicepatientshistory:
+    container_name: mspatientshistory
+    build: ./microservice-patienthistory
+    restart: always
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongodb
+      #      - configserver
+      - eurekaserver
+      - microservicepatients
+    command:
+      - sh -c './wait-for mongodb:27017 -- npm start'
+      - sh -c './wait-for eurekaserver:9102 -- npm start'
+      - sh -c './wait-for microservicepatients:8081 -- npm start'
+
+  microservicereport:
+    container_name: msreport
+    build: ./microservice-report
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - microservicepatients
+      - microservicepatientshistory
+      #      - configserver
+      - eurekaserver
+    command:
+      - sh -c './wait-for eurekaserver:9102 -- npm start'
+      - sh -c './wait-for microservicepatients:8081 -- npm start'
+      - sh -c './wait-for microservicepatientshistory:8082 -- npm start'
+
+  clientui:
+    container_name: clientui
+    build: ./client-ui
+    restart: always
+    ports:
+      - "8100:8100"
+    depends_on:
+      #      - configserver
+      - eurekaserver
+      - apigateway
+    command:
+      - sh -c './wait-for eurekaserver:9102 -- npm start'
+      - sh -c './wait-for apigateway:8090 -- npm start'

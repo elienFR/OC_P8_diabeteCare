@@ -11,6 +11,14 @@ localConfig:
   microServicePatients:
     uri: 'lb://api-gateway/patient'
 
+url:
+  patient:
+    proxy: "localhost:8090/patient"
+  patientHistory:
+    proxy: "localhost:8090/patHistory"
+  reports:
+    proxy: "localhost:8090/assess"
+
 #Eureka
 eureka:
   client:

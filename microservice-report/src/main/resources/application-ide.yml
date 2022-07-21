@@ -17,6 +17,11 @@ eureka:
 #Api version
 api:
   ver: 'v1'
+url:
+  patient:
+    proxy: "localhost:8090/patient"
+  patientHistory:
+    proxy: "localhost:8090/patHistory"
 
 management:
   endpoints:

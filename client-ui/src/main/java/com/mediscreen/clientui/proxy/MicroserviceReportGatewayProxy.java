@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.constraints.NotBlank;
 
-@FeignClient(name = "microservice-report", url = "localhost:8090/assess")
+@FeignClient(name = "microservice-report", url = "${url.reports.proxy}")
 public interface MicroserviceReportGatewayProxy {
 
 

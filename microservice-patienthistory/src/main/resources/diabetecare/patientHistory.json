@@ -1,0 +1,494 @@
+{
+  "_id": {
+    "$oid": "62c6eb724531c51f44abc904"
+  },
+  "patId": "1",
+  "notes": "Patient states that they are 'feeling terrific' Weight at or below recommended level",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657203570524"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62c6eba74531c51f44abc905"
+  },
+  "patId": "2",
+  "notes": "Patient states that they are feeling a great deal of stress at work Patient also complains that their hearing seems Abnormal as of late",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657203623492"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62c6ebc44531c51f44abc906"
+  },
+  "patId": "2",
+  "notes": " Patient states that they have had a Reaction to medication within last 3 months Patient also complains that their hearing continues to be problematic",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657203652541"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62c6ec004531c51f44abc907"
+  },
+  "patId": "3",
+  "notes": "Patient states that they are short term Smoker",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657203712952"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62c6ec0c4531c51f44abc908"
+  },
+  "patId": "3",
+  "notes": "Patient states that they quit within last year Patient also complains that of Abnormal breathing spells Lab reports Cholesterol LDL high",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657203724204"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62c6ec384531c51f44abc909"
+  },
+  "patId": "4",
+  "notes": "Patient states that walking up stairs has become difficult Patient also complains that they are having shortness of breath Lab results indicate Antibodies present elevated Reaction to medication",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657203768573"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62c6ec424531c51f44abc90a"
+  },
+  "patId": "4",
+  "notes": "Patient states that they are experiencing back pain when seated for a long time",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657203778060"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62c6ec4a4531c51f44abc90b"
+  },
+  "patId": "4",
+  "notes": "Patient states that they are a short term Smoker Hemoglobin A1C above recommended level",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657203786282"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62c6ec534531c51f44abc90c"
+  },
+  "patId": "4",
+  "notes": "Patient states that Body Height, Body Weight, Cholesterol, Dizziness and Reaction",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657203795239"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3ec3b4f207530cf3b16c"
+  },
+  "patId": "5",
+  "notes": "Le patient déclare qu'il « se sent très bien »\nPoids égal ou inférieur au poids recommandé",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618115775"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eecb4f207530cf3b16d"
+  },
+  "patId": "5",
+  "notes": "Le patient déclare qu'il se sent fatigué pendant la journée\nIl se plaint également de douleurs musculaires\nTests de laboratoire indiquant une microalbumine élevée",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618156248"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b16e"
+  },
+  "patId": "5",
+  "notes": "Le patient déclare qu'il ne se sent pas si fatigué que ça\nFumeur, il a arrêté dans les 12 mois précédents\nTests de laboratoire indiquant que les anticorps sont élevés",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157468"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b16f"
+  },
+  "patId": "6",
+  "notes": "Le patient déclare qu'il ressent beaucoup de stress au travail\nIl se plaint également que son audition est anormale dernièrement",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157483"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b170"
+  },
+  "patId": "6",
+  "notes": "Le patient déclare avoir fait une réaction aux médicaments au cours des 3 derniers mois\nIl remarque également que son audition continue d'être anormale",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157495"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b171"
+  },
+  "patId": "6",
+  "notes": "Tests de laboratoire indiquant une microalbumine élevée",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157507"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b172"
+  },
+  "patId": "6",
+  "notes": "Le patient déclare que tout semble aller bien\nLe laboratoire rapporte que l'hémoglobine A1C dépasse le niveau recommandé\nLe patient déclare qu’il fume depuis longtemps",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157519"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b173"
+  },
+  "patId": "7",
+  "notes": "Le patient déclare qu'il fume depuis peu",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157533"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b174"
+  },
+  "patId": "7",
+  "notes": "Tests de laboratoire indiquant une microalbumine élevée",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157547"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b175"
+  },
+  "patId": "7",
+  "notes": "Le patient déclare qu'il est fumeur et qu'il a cessé de fumer l'année dernière\nIl se plaint également de crises d’apnée respiratoire anormales\nTests de laboratoire indiquant un taux de cholestérol LDL élevé",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157560"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b176"
+  },
+  "patId": "7",
+  "notes": "Tests de laboratoire indiquant un taux de cholestérol LDL élevé",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157572"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b177"
+  },
+  "patId": "8",
+  "notes": "Le patient déclare qu'il lui est devenu difficile de monter les escaliers\nIl se plaint également d’être essoufflé\nTests de laboratoire indiquant que les anticorps sont élevés\nRéaction aux médicaments",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157583"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b178"
+  },
+  "patId": "8",
+  "notes": "Le patient déclare qu'il a mal au dos lorsqu'il reste assis pendant longtemps",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157596"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b179"
+  },
+  "patId": "8",
+  "notes": "Le patient déclare avoir commencé à fumer depuis peu\nHémoglobine A1C supérieure au niveau recommandé",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157609"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b17a"
+  },
+  "patId": "9",
+  "notes": "Le patient déclare avoir des douleurs au cou occasionnellement\nLe patient remarque également que certains aliments ont un goût différent\nRéaction apparente aux médicaments\nPoids corporel supérieur au poids recommandé",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157622"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b17b"
+  },
+  "patId": "9",
+  "notes": "Le patient déclare avoir eu plusieurs épisodes de vertige depuis la dernière visite.\nTaille incluse dans la fourchette concernée",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157634"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b17c"
+  },
+  "patId": "9",
+  "notes": "Le patient déclare qu'il souffre encore de douleurs cervicales occasionnelles\nTests de laboratoire indiquant une microalbumine élevée\nFumeur, il a arrêté dans les 12 mois précédents",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157646"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b17d"
+  },
+  "patId": "9",
+  "notes": "Le patient déclare avoir eu plusieurs épisodes de vertige depuis la dernière visite.\nTests de laboratoire indiquant que les anticorps sont élevés",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157657"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b17e"
+  },
+  "patId": "10",
+  "notes": "Le patient déclare qu'il se sent bien\nPoids corporel supérieur au poids recommandé",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157669"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b17f"
+  },
+  "patId": "10",
+  "notes": "Le patient déclare qu'il se sent bien",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157680"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b180"
+  },
+  "patId": "11",
+  "notes": "Le patient déclare qu'il se réveille souvent avec une raideur articulaire\nIl se plaint également de difficultés pour s’endormir\nPoids corporel supérieur au poids recommandé\nTests de laboratoire indiquant un taux de cholestérol LDL élevé",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157693"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b181"
+  },
+  "patId": "12",
+  "notes": "Les tests de laboratoire indiquent que les anticorps sont élevés\nHémoglobine A1C supérieure au niveau recommandé",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157707"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b182"
+  },
+  "patId": "13",
+  "notes": "Le patient déclare avoir de la difficulté à se concentrer sur ses devoirs scolaires\nHémoglobine A1C supérieure au niveau recommandé",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157719"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b183"
+  },
+  "patId": "13",
+  "notes": "Le patient déclare qu'il s’impatiente facilement en cas d’attente prolongée\nIl signale également que les produits du distributeur automatique ne sont pas bons\nTests de laboratoire signalant des taux anormaux de cellules sanguines",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157733"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b184"
+  },
+  "patId": "13",
+  "notes": "Le patient signale qu'il est facilement irrité par des broutilles\nIl déclare également que l'aspirateur des voisins fait trop de bruit\nTests de laboratoire indiquant que les anticorps sont élevés",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157743"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b185"
+  },
+  "patId": "14",
+  "notes": "Le patient déclare qu'il n'a aucun problème",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157754"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b186"
+  },
+  "patId": "14",
+  "notes": "Le patient déclare qu'il n'a aucun problème\nTaille incluse dans la fourchette concernée\nHémoglobine A1C supérieure au niveau recommandé",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157765"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b187"
+  },
+  "patId": "14",
+  "notes": "Le patient déclare qu'il n'a aucun problème\nPoids corporel supérieur au poids recommandé\nLe patient a signalé plusieurs épisodes de vertige depuis sa dernière visite",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157775"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}
+{
+  "_id": {
+    "$oid": "62cd3eedb4f207530cf3b188"
+  },
+  "patId": "14",
+  "notes": "Le patient déclare qu'il n'a aucun problème\nTests de laboratoire indiquant une microalbumine élevée",
+  "datetime": {
+    "$date": {
+      "$numberLong": "1657618157790"
+    }
+  },
+  "_class": "com.mediscreen.microservicepatienthistory.model.PatientHistory"
+}

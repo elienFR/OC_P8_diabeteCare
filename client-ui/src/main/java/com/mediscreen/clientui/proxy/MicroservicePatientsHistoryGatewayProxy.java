@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import java.util.List;
 
-@FeignClient(name = "microservice-patienthistory", url = "localhost:8090/patHistory")
+@FeignClient(name = "microservice-patienthistory", url = "${url.patientHistory.proxy}")
 public interface MicroservicePatientsHistoryGatewayProxy {
 
   @GetMapping("/find")

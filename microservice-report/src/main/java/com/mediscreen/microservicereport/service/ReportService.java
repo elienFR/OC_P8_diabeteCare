@@ -29,6 +29,7 @@ public class ReportService {
   @Autowired
   private FileUtilityService fileUtilityService;
 
+  // TODO : we must use a specific path that wont be a problem when using jar and docker compose because the file is not find when using one of these methods.
   private static final String TRIGGER_WORDS_FILEPATH = "resources/triggerwords.txt";
 
   /**

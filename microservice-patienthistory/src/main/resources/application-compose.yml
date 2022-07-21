@@ -6,11 +6,11 @@ spring:
         name: 'microservice-patienthistory'
     data:
         mongodb:
-            host: 'localhost'
+            host: 'mongodb'
             port: '27017'
             database: 'diabetecare'
-#            username: ''
-#            password: ''
+#            username: 'root'
+#            password: 'root'
             auto-index-creation: 'true'
 
 
@@ -26,6 +26,9 @@ eureka:
 #Api version
 api:
     ver: 'v1'
+url:
+    patient:
+        proxy: "apigateway:8090/patient"
 
 management:
     endpoints:

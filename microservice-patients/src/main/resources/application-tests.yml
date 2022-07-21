@@ -33,8 +33,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: 'http://localhost:9102/eureka/'
-    registerWithEureka: 'true'
-    fetchRegistry: 'true'
+    registerWithEureka: 'false'
+    fetchRegistry: 'false'
 
 #Personal configs
 #Api version
