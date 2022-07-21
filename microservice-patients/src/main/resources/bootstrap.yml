@@ -3,4 +3,4 @@ spring:
     name: 'microservice-patients'
   cloud:
     config:
-      uri: 'http://localhost:9101'
+      uri: 'http://configserver:9101'

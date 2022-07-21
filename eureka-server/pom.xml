@@ -12,11 +12,11 @@
 
 	<groupId>com.mediscreen</groupId>
 	<artifactId>eureka-server</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>eureka-server</name>
-	<description>Eureka repository server for micrservices</description>
+	<description>Eureka repository server for microservices</description>
 
 	<properties>
 		<java.version>11</java.version>

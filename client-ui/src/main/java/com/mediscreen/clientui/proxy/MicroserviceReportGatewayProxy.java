@@ -17,6 +17,6 @@ public interface MicroserviceReportGatewayProxy {
 
   @GetMapping("/assessOnly/{id}")
   DiabetesAssessment requestAssess(@NotBlank(message = "The patient id cannot be null")
-                                              @PathVariable("id") String patId);
+                                   @PathVariable("id") String patId);
 
 }

@@ -1,0 +1,29 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: 'microservice-report'
+
+#Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:9102/eureka/'
+    registerWithEureka: 'true'
+    fetchRegistry: 'true'
+
+#Personal configs
+#Api version
+api:
+  ver: 'v1'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - mappings
+          - env
+          - health
+          - info

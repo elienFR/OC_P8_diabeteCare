@@ -4,17 +4,17 @@ server:
 
 info:
   app:
-    name: ${spring.application.name}
+    name: '${spring.application.name}'
 
 # Eureka
 eureka:
   client:
     serviceUrl:
-      defaultZone: 'http://localhost:9102/eureka/'
+      defaultZone: 'http://eurekaserver:9102/eureka/'
     registerWithEureka: 'true'
     fetchRegistry: 'true'
 
-# App + Gateway
+# Api Gateway
 spring:
   application:
     name: 'api-gateway'
@@ -25,6 +25,18 @@ spring:
           uri: 'lb://microservice-patients'
           predicates:
             - Path=/patient/**
+          filters:
+            - PrefixPath=/api/v1
+        - id: microservice-patienthistory
+          uri: 'lb://microservice-patienthistory'
+          predicates:
+            - Path=/patHistory/**
+          filters:
+            - PrefixPath=/api/v1
+        - id: 'microservice-report'
+          uri: 'lb://microservice-report'
+          predicates:
+            - Path=/assess/**
           filters:
             - PrefixPath=/api/v1
 
@@ -38,4 +50,3 @@ management:
           - env
           - health
           - info
-

@@ -1,0 +1,53 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: 'microservice-patients'
+  datasource:
+    url: 'jdbc:mysql://localhost:3306/diabetecare'
+    username: 'diabetecareusr'
+    password: 'diabetecare123'
+    # initialize ans initialization-mode are not defined because it is the sql.init.mode
+    # that will read database init process through schema.sql and data.sql files.
+#    initialize: 'true'
+#    initialization-mode: 'always'
+
+  jpa:
+    show-sql: 'true'
+    properties:
+      hibernate:
+        dialect: 'org.hibernate.dialect.MySQL8Dialect'
+        jdbc:
+          time_zone: 'UTC'
+    # hibernate.ddl-auto defined as none because it is the sql.init.mode that will read database init process through
+    # schema.sql and data.sql files.
+    hibernate:
+        ddl-auto: 'none'
+  sql:
+    init:
+      mode: 'always'
+
+
+#Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:9102/eureka/'
+    registerWithEureka: 'true'
+    fetchRegistry: 'true'
+
+#Personal configs
+#Api version
+api:
+  ver: 'v1'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - mappings
+          - env
+          - health
+          - info

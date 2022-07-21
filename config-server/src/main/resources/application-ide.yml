@@ -1,0 +1,20 @@
+#Server
+server:
+  port: 9101
+
+#Spring
+spring:
+  application:
+    name: 'config-server'
+  cloud:
+    compatibility-verifier:
+      enabled: 'false'
+    config:
+      server:
+        bootstrap: 'true'
+        git:
+          default-label: 'config_repo'
+          uri: 'https://github.com/elienFR/OC_P9_diabeteCare_config_repo'
+
+
+

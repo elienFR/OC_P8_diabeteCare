@@ -1,0 +1,16 @@
+server:
+  port: 9102
+
+spring:
+  application:
+    name: 'eureka-server'
+
+#Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://eurekaserver:9102/eureka/'
+    registerWithEureka: 'false'
+    fetchRegistry: 'false'
+  server:
+    renewal-percent-threshold: 0.85
