@@ -21,12 +21,9 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
-@Disabled
 @ActiveProfiles("test")
 @SpringBootTest
 public class ReportServiceTest {
-
-  // TODO : 5 tests out of 7 does not pass when using mvn:package whereas they pass using ide test...
 
   @Autowired
   private ReportService reportServiceUnderTest;

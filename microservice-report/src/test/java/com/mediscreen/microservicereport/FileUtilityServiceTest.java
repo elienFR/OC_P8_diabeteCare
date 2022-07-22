@@ -25,7 +25,7 @@ public class FileUtilityServiceTest {
 
   @BeforeEach
   public void init(){
-    givenFile = "resources/testfile.txt";
+    givenFile = "testfile.txt";
   }
 
 
@@ -44,7 +44,7 @@ public class FileUtilityServiceTest {
   @Test
   public void convertLinesInListTestException() {
 
-    assertThrows(IOException.class, () -> FileUtilityService.convertLinesInList("somepath"));
+    assertThrows(NullPointerException.class, () -> FileUtilityService.convertLinesInList("somepath"));
 
   }
 

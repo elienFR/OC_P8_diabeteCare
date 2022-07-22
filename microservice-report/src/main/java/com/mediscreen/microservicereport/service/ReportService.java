@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -29,8 +28,8 @@ public class ReportService {
   @Autowired
   private FileUtilityService fileUtilityService;
 
-  // TODO : we must use a specific path that wont be a problem when using jar and docker compose because the file is not find when using one of these methods.
-  private static final String TRIGGER_WORDS_FILEPATH = "resources/triggerwords.txt";
+  // The file must be located in src/main/resources
+  private static final String TRIGGER_WORDS_FILENAME = "triggerwords.txt";
 
   /**
    * This method creates a diabetes report.
@@ -141,7 +140,7 @@ public class ReportService {
             .map(StringUtils::stripAccents)
             .map(String::toLowerCase)
             .collect(Collectors.toList()),
-          FileUtilityService.convertLinesInList(TRIGGER_WORDS_FILEPATH).stream()
+          FileUtilityService.convertLinesInList(TRIGGER_WORDS_FILENAME).stream()
             //all strings in trigger words' list are put in lowercase and without accent
             .map(StringUtils::stripAccents)
             .map(String::toLowerCase)
@@ -165,12 +164,10 @@ public class ReportService {
     LOGGER.info("Creating report display for patID=" + patId + "...");
     DiabetesReport diabetesReport = createReport(patId);
 
-    StringBuffer stringBuffer = new StringBuffer("Patient: ");
-    stringBuffer.append(diabetesReport.getPatient().getFirstname() + " ");
-    stringBuffer.append(diabetesReport.getPatient().getLastname() + " ");
-    stringBuffer.append("(age " + patientService.getAge(diabetesReport.getPatient()) + ") ");
-    stringBuffer.append("diabetes assessment is:" + diabetesReport.getDiabetesAssessment().name());
-
-    return stringBuffer.toString();
+    return "Patient: " +
+      diabetesReport.getPatient().getFirstname() + " " +
+      diabetesReport.getPatient().getLastname() + " " +
+      "(age " + patientService.getAge(diabetesReport.getPatient()) + ") " +
+      "diabetes assessment is:" + diabetesReport.getDiabetesAssessment().name();
   }
 }

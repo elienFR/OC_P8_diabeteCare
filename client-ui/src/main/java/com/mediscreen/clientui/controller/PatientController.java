@@ -72,14 +72,14 @@ public class PatientController {
       try {
         PatientDTO patientSaved = patientService.save(patientDTO);
         model.addAttribute("patientDTOFound", patientSaved);
-        return "/patient/added";
+        return "patient/added";
       } catch (AlreadyExistsException aee) {
         LOGGER.warn("patient already exists, it wont be saved.");
         model.addAttribute("patientAlreadyExists", true);
-        return "/patient/add";
+        return "patient/add";
       } catch (Exception e) {
         e.printStackTrace();
-        return "/patient/add";
+        return "patient/add";
       }
     }
     LOGGER.warn("Error found in patientDTO object...");
@@ -88,7 +88,7 @@ public class PatientController {
         LOGGER.warn(e.getDefaultMessage())
 
     );
-    return "/patient/add";
+    return "patient/add";
   }
 
   @GetMapping("/search")
