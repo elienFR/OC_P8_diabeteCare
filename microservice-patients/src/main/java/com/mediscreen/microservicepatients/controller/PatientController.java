@@ -135,7 +135,7 @@ public class PatientController {
     LOGGER.info("POST : /api/" + apiVer + "/patient/add");
     try {
       PatientDTO patientDTOAdded =
-        patientService.insert(lastname, firstname, birthdate, gender, addressNumberAndStreet, phone);
+        patientService.create(lastname, firstname, birthdate, gender, addressNumberAndStreet, phone);
       LOGGER.info("Displaying 201 CREATED + added patient info...");
       return ResponseEntity.status(HttpStatus.CREATED).body(patientDTOAdded);
     } catch (AlreadyExistsException e) {

@@ -28,6 +28,15 @@ public class PatientHistory {
   @Field(name = "datetime")
   private LocalDateTime localDateTime;
 
+  public PatientHistory() {
+  }
+
+  public PatientHistory(String patId, String notes, LocalDateTime localDateTime) {
+    this.setPatId(patId);
+    this.setNotes(notes);
+    this.setLocalDateTime(localDateTime);
+  }
+
   public String getId() {
     return id;
   }

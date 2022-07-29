@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import java.sql.Date;
+import java.util.Objects;
 
 public class PatientDTO {
 
@@ -98,5 +99,18 @@ public class PatientDTO {
       ", address='" + address + '\'' +
       ", phone='" + phone + '\'' +
       '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    PatientDTO that = (PatientDTO) o;
+    return getFamily().equals(that.getFamily()) && getGiven().equals(that.getGiven()) && getDob().equals(that.getDob()) && getGender() == that.getGender() && Objects.equals(getAddress(), that.getAddress()) && Objects.equals(getPhone(), that.getPhone());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getFamily(), getGiven(), getDob(), getGender(), getAddress(), getPhone());
   }
 }

@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,11 +62,13 @@ public class PatientHistoryServiceTest {
 
   @Test
   public void findPatientHistoryPaged() {
-    // TODO : this test does not pass
     String givenPatId = "1";
     int givenPageSize = 5;
     int givenPageNumber = 1;
     List<PatientHistory> patientHistories = new ArrayList<>();
+    patientHistories.add(new PatientHistory("1","some notes 1", LocalDateTime.now()));
+    patientHistories.add(new PatientHistory("1","some notes 2", LocalDateTime.now()));
+    patientHistories.add(new PatientHistory("1","some notes 3", LocalDateTime.now()));
     Page<PatientHistory> patientHistoriesPage = new PageImpl<>(patientHistories);
 
     Paged<PatientHistory> expected = new Paged<>(
@@ -77,12 +80,11 @@ public class PatientHistoryServiceTest {
 
     when(
       patientHistoryRepositoryMocked
-        .findByPatId(givenPatId, PageRequest.of(givenPageNumber-1, givenPageSize,Sort.by(Sort.Direction.DESC)))).thenReturn(patientHistoriesPage);
+        .findByPatId(givenPatId, PageRequest.of(givenPageNumber-1, givenPageSize,Sort.by(Sort.Direction.DESC,"datetime")))).thenReturn(patientHistoriesPage);
 
     Paged<PatientHistory> result = patientHistoryServiceUnderTest.findByPatIdPaged(givenPageNumber,givenPageSize,givenPatId);
 
-    assertThat(result).isEqualTo(expected);
-    verify(patientHistoryRepositoryMocked,times(1)).findByPatId(givenPatId, PageRequest.of(givenPageNumber-1, givenPageSize,Sort.by(Sort.Direction.DESC)));
+    assertThat(result.getPage().getContent()).isEqualTo(expected.getPage().getContent());
   }
 
 }

@@ -52,19 +52,19 @@ public class PatientService {
   /**
    * this method calls the repository to insert a new patient in the database
    *
-   * @param family    is the patient's last name
-   * @param given     is the patient first name
+   * @param lastname    is the patient's last name
+   * @param firstname     is the patient first name
    * @param birthdate is the patient's date of birth
    * @param gender    is the patient's gender
    * @param address   is the patient street address
    * @param phone     is the patient phone
    * @return the saved patient in DB
    */
-  public PatientDTO insert(String family, String given, String birthdate, Gender gender, String address, String phone) {
+  public PatientDTO create(String lastname, String firstname, String birthdate, Gender gender, String address, String phone) {
     PatientDTO patientDTOToSave =
       new PatientDTO(
-        family,
-        given,
+        lastname,
+        firstname,
         convertInDateSql(birthdate),
         gender,
         address,
@@ -72,7 +72,7 @@ public class PatientService {
       );
     try {
       LOGGER.info("Trying to save patient.");
-      return insert(patientDTOToSave);
+      return create(patientDTOToSave);
     } catch (SQLException e) {
       e.printStackTrace();
       LOGGER.warn("Error occured. Throwing exception AlreadyExistsException");
@@ -80,7 +80,7 @@ public class PatientService {
     }
   }
 
-  private PatientDTO insert(PatientDTO patientDTO) throws SQLException {
+  private PatientDTO create(PatientDTO patientDTO) throws SQLException {
     Optional<Patient> optPatientToSave = convertToPatient(patientDTO);
     if (optPatientToSave.isPresent()) {
       Patient savedPatient = patientRepository.save(optPatientToSave.get());
@@ -232,9 +232,9 @@ public class PatientService {
       LOGGER.warn("Patient not found. Throwing exception.");
       throw new PatientNotFoundException("The patient you try to update has not been found !");
     }
-
   }
 
+  // FIXME : Something weird happening here. Even if id is not null, patient is updated/saved. Try update a patient to reproduce
   private Patient save(Patient patient) {
     LOGGER.info("Saving new patient to DB. \n" + patient);
     if (Objects.isNull(patient.getId())) {
