@@ -58,7 +58,7 @@ public class PatientHistoryServiceTest {
     verify(patientHistoryRepositoryMocked,times(1)).findByPatId(givenPatId);
   }
 
-  @Disabled
+
   @Test
   public void findPatientHistoryPaged() {
     // TODO : this test does not pass

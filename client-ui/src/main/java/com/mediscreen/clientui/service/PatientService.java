@@ -1,6 +1,5 @@
 package com.mediscreen.clientui.service;
 
-import com.mediscreen.clientui.controller.PatientController;
 import com.mediscreen.clientui.exceptions.AlreadyExistsException;
 import com.mediscreen.clientui.exceptions.PatientNotFoundException;
 import com.mediscreen.clientui.model.beans.Patient;
@@ -14,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.Objects;
 
 @Service
 public class PatientService {
@@ -24,12 +24,21 @@ public class PatientService {
   private MicroservicePatientsGatewayProxy microservicePatientsGatewayProxy;
 
   public PatientDTO getPatient(String lastname, String firstname, String birthdate) {
-    return microservicePatientsGatewayProxy.getPatient(lastname, firstname, birthdate);
+    LOGGER.info("Getting PatientDTO from database...");
+    try {
+      return microservicePatientsGatewayProxy.getPatient(lastname, firstname, birthdate);
+    } catch (PatientNotFoundException pnfe) {
+      throw pnfe;
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw e;
+    }
   }
 
   public PatientDTO getPatient(@Valid PatientDTOForSearch patientDTO) {
     LOGGER.info("Getting PatientDTO from database...");
     try {
+
       return getPatient(
         patientDTO.getFamily(),
         patientDTO.getGiven(),
@@ -46,7 +55,7 @@ public class PatientService {
   public PatientDTO save(@Valid PatientDTO patientDTO) throws AlreadyExistsException {
     LOGGER.info("Saving patient...");
     try {
-      PatientDTO savedPatient = microservicePatientsGatewayProxy.insert(
+      PatientDTO savedPatient = microservicePatientsGatewayProxy.create(
         patientDTO.getFamily(),
         patientDTO.getGiven(),
         patientDTO.getDob().toString(),
@@ -96,19 +105,19 @@ public class PatientService {
     }
   }
 
-  public String getId(PatientDTO patientDTO) {
+  public String getId(PatientDTO patientDTO) throws PatientNotFoundException {
     LOGGER.info("Getting ID of patient " + patientDTO);
-    String patId = microservicePatientsGatewayProxy.getId(
+    Integer patId = microservicePatientsGatewayProxy.getId(
         patientDTO.getFamily(),
         patientDTO.getGiven(),
-        patientDTO.getDob().toString())
-      .toString();
-    if (patId.isBlank()) {
+        patientDTO.getDob().toString());
+
+    if (Objects.isNull(patId)) {
       LOGGER.warn("No such patient found. Id returned is null.");
-      return null;
+      throw new PatientNotFoundException("No such patient found");
     }
     LOGGER.info("Patient id is : patID=" + patId);
-    return patId;
+    return patId.toString();
   }
 
   public Paged<Patient> getAllPatientPaged(Integer pageNum, Integer pageSize) {

@@ -15,6 +15,12 @@ public class PatientDTOForSearch {
   @PastOrPresent(message = "Date of birth must be past or present !")
   private Date dob;
 
+  public PatientDTOForSearch(String family, String given, Date dob) {
+    this.setFamily(family);
+    this.setGiven(given);
+    this.setDob(dob);
+  }
+
   public String getFamily() {
     return family;
   }

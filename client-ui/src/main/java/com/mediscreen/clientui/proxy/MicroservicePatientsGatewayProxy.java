@@ -1,5 +1,7 @@
 package com.mediscreen.clientui.proxy;
 
+import com.mediscreen.clientui.exceptions.AlreadyExistsException;
+import com.mediscreen.clientui.exceptions.PatientNotFoundException;
 import com.mediscreen.clientui.model.beans.Gender;
 import com.mediscreen.clientui.model.beans.Patient;
 import com.mediscreen.clientui.model.beans.PatientDTO;
@@ -22,10 +24,10 @@ public interface MicroservicePatientsGatewayProxy {
     @NotBlank(message = "Given is mandatory !")
     @RequestParam("given") String firstname,
     @Pattern(regexp = "^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$")
-    @RequestParam("dob") String birthdate);
+    @RequestParam("dob") String birthdate) throws PatientNotFoundException;
 
   @PostMapping("/add")
-  PatientDTO insert(
+  PatientDTO create(
     @NotBlank(message = "Family is mandatory !")
     @RequestParam("family") String lastname,
 
@@ -44,7 +46,7 @@ public interface MicroservicePatientsGatewayProxy {
     // 'nnn-nnn-nnnn' or the pattern has to correspond to an empty string.
     @RequestParam("phone")
     @Pattern(message = "must be a properly written US phone number, i.e : 123-456-7890",
-      regexp = "^(?:(\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4}))|)$") String phone);
+      regexp = "^(?:(\\(?(\\d{3})\\)?[-.\\s]?(\\d{3})[-.\\s]?(\\d{4}))|)$") String phone) throws AlreadyExistsException;
 
   @PutMapping("/update")
   PatientDTO update(

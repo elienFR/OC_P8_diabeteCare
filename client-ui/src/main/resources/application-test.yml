@@ -1,0 +1,38 @@
+server:
+  port:
+    8100
+
+spring:
+  application:
+    name: 'client-ui'
+
+
+localConfig:
+  microServicePatients:
+    uri: 'lb://api-gateway/patient'
+
+url:
+  patient:
+    proxy: "localhost:8090/patient"
+  patientHistory:
+    proxy: "localhost:8090/patHistory"
+  reports:
+    proxy: "localhost:8090/assess"
+
+#Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: 'http://localhost:9102/eureka/'
+    registerWithEureka: 'true'
+    fetchRegistry: 'true'
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - mappings
+          - env
+          - health
+          - info
