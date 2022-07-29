@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class FileUtilityServiceTest {
   @Test
   public void convertLinesInListTestException() {
 
-    assertThrows(NullPointerException.class, () -> FileUtilityService.convertLinesInList("somepath"));
+    assertThrows(FileNotFoundException.class, () -> FileUtilityService.convertLinesInList("somepath"));
 
   }
 
