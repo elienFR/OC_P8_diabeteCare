@@ -48,7 +48,7 @@ Then the apps analyses notes and produce a report to alarm doctors about their p
     - or you can choose `patientHistory.json` (to be imported in CLI with `mongo-dump`).
 
 
-### Config server (DEPRECATED)
+### Config server (NOT USED BY DEFAULT)
 - The project has a module called `config-server`. This module communicates with a git repo to provides properties to each other modules in the app.
 - The module is not used anymore.
 
@@ -57,4 +57,4 @@ Then the apps analyses notes and produce a report to alarm doctors about their p
   - `application-ide.yml` is used to be run when launching app through the ide.
   - `application-compose.yml` is used to be run by the app when launched through docker-compose.
   - `application-test.yml` is used when tests are run.
-  - (DEPRECATED) `bootstrap.yml` is used to provide to the app the address of remote repo where to find config files. 
+  - (NOT USED BY DEFAULT) `bootstrap.yml` is used to provide to the app the address of remote repo where to find config files. 
