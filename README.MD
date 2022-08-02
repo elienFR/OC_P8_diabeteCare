@@ -13,8 +13,8 @@ Then the apps analyses notes and produce a report to alarm doctors about their p
    5. microservice-patients
    6. microservice-report
 3. put each jar file in its respective folder inside <b>diabetecre-compose</b>
-4. run a console inside ./diabetecare-compose
-5. run command "docker compose up --build"
+4. run a console inside *{projectFolder}/diabetecare-compose/*
+5. run command `docker compose up --build`
 
 ## Endpoint
 1. `clint-ui` : http://localhost:8100
