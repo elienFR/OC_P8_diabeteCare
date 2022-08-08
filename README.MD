@@ -3,6 +3,12 @@
 This app is a POF for doctors. It enables them to writes notes about patients.<br>
 Then the apps analyses notes and produce a report to alarm doctors about their patients' potential sensitivity to diabetes.
 
+## Prerequisite
+- Docker-compose v2.6.1
+- Docker (desktop) v20.10.17
+- Ide : IntelliJ or Eclipse
+
+
 ## How to run from ide
 1. First of all, make sure you created a Database named `diabetecare`, and that a user called `diabetecareusr` with the password as shown in the table below has all the permissions on that database.
 2. Make also sure that your local `mysql port` is `3306`.
