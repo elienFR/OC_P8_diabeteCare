@@ -4,9 +4,10 @@ This app is a POF for doctors. It enables them to writes notes about patients.<b
 Then the apps analyses notes and produce a report to alarm doctors about their patients' potential sensitivity to diabetes.
 
 ## Prerequisite
-- Docker-compose v2.6.1
-- Docker (desktop) v20.10.17
+- [Docker desktop](https://docs.docker.com/desktop/)
+- [MongoDB datatools (latest)](https://www.mongodb.com/docs/database-tools/installation/installation/)
 - Ide : IntelliJ or Eclipse
+- ***Note that all directories are written in this readme file in windows style, especially concerning paths regarding \ and /...)***
 
 
 ## How to run from ide
@@ -67,9 +68,13 @@ Then the apps analyses notes and produce a report to alarm doctors about their p
     - `microservice-patients/src/main/resources/data.sql` which add/update data to the DB.
     - It is recommended not to `data.sql`. It is intended to test the app. Nothing more.
   - You can initialise NoSQL database by using a provided file located here : `microservice-patienthistory/src/main/resources/diabetecare`
-    - you can choose between `patientHistory.bson` (to be imported with a software like **Studio3T**).
+    - you can choose between `patientHistory.bson` (to be imported with a software like **Studio3T**, or `mongorestore` command).
     - or you can choose `patientHistory.json` (to be imported in CLI with `mongo-dump`).
-
+    - If you want to do so here are the steps to follow using mongorestore :
+      1. Make sure you have Mongo data tools properly installed on your computer (link provided above).
+      2. open a terminal in `microservice-patienthistory/src/main/resources/diabetecare`
+      3. from this terminal, execute command : `mongorestore [additional options] --host="<host URL/IP>:<Port>"  [restore directory/file.bson]`
+         1. ie for this project using dockercompose : `mongorestore --host="localhost:27018" ./diabetecare/patientHistory.bson`
 
 ### Config server (NOT USED BY DEFAULT)
 - The project has a module called `config-server`. This module communicates with a git repo to provides properties to each other modules in the app.
